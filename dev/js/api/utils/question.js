@@ -37,15 +37,9 @@ const QuestionAPI = {
       method: API._REQUEST_METHOD.post
     }
   },
-  createQuestion(data, cb){
+  createQuestion(data){
     const route = this._routes.create;
-    API.callAjaxRequest(route, data, (err, res) => {
-      if(err){
-        cb(true, null);
-      } else {
-        cb(!res.body.ok, res.body.question);
-      }
-    });
+    return API.callAjaxRequest(route, data);
   },
   updateQuestionData(data, cb){
     const route = this._routes.updateQuestionData;
@@ -84,16 +78,10 @@ const QuestionAPI = {
     });
   },
 
-  deleteQuestion(data, cb) {
+  deleteQuestion(data) {
     const route = this._routes.delete;
-    API.callAjaxRequest(route, data, (err, res) => {
-      if (err) {
-        cb(true, null);
-      } else {
-        cb(!res.body.ok, res.body.question)
-      }
-    });
-  }, 
+    return API.callAjaxRequest(route, data);
+  },
   validateVariables(data, cb){
     const route = this._routes.validateVariables;
     API.callAjaxRequest(route, data, (err, res) => {
