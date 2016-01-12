@@ -1,0 +1,57 @@
+.QuestionExplorer
+	display flex
+	height 100%
+	width 100%
+	flex-direction column;
+
+	.file-table
+		display table
+		table-layout fixed
+		width 100%
+
+		.headers
+			background-color rgb(250,250,250)
+			position relative
+			width 100%
+			display table-header-group
+
+			.header
+				display table-cell
+				height 48px
+				box-sizing border-box
+				background-color #fafafa
+				vertical-align middle
+				border-bottom 1px solid #eee
+				.title
+					line-height 48px
+					text-align left
+					padding-left 16px
+					font-size 13px
+
+			.header.clickable
+				cursor pointer
+				&:hover
+					background-color #eee
+			.header.clickable.clicked
+				font-weight bold
+	.Row
+		display table-row
+		width 100%
+		height 48px
+		box-sizing border-box
+		background-color #fff
+
+		.cell
+			display table-cell
+			width 100%
+			line-height 48px
+			text-align left
+			font-size 13px
+			border-bottom 1px solid #eee
+			vertical-align middle
+
+
+
+
+
+

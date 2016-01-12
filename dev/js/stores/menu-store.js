@@ -4,13 +4,12 @@ const CHANGE_EVENT = 'change';
 var Dispatcher = require('../dispatchers/dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
-let _rootFolder = window.rootFolder || {};
+let _rootFolder = null;
 var _folders = [];
 var _sharedRootFolder = [];
 
 function _setRootFolder(rootFolder) {
-  if(rootFolder._id != _rootFolder._id)
-    _rootFolder = rootFolder;
+  _rootFolder = rootFolder;
 }
 
 function _getRootFolder() {
@@ -68,7 +67,7 @@ function _shareQuestion(QuestionIndex, question) {
   console.log("AGGGGHHHH");
   // if (_rootFolder.questions[QuestionIndex].id == question.id) {
   //   _rootFolder.questions[QuestionIndex]
-  // } 
+  // }
 }
 
 var MenuStore = assign({}, EventEmitter.prototype, {
