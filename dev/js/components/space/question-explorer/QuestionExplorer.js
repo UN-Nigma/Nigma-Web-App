@@ -1,33 +1,23 @@
 import React from 'react';
 import Header from './Header'
 import Row from './Row'
-var MenuActions = require('../../../actions/menu-actions');
+var Reflux = require('reflux');
+var QuestionExplorerActions = require('../../../actions/questionExplorerActions');
+var QuestionExplorerStore = require('../../../stores/questionExplorerStore');
 var QuestionExplorer = React.createClass({
-	getInitialState: function() {
-		return {
-			actualFolder: MenuStore.getRootFolder()
-		};
-	},
+	mixins: [Reflux.connect(QuestionExplorerStore, 'storeData')],
 
 	clickHeaderAction(evt) {
 		console.log(evt.target);
 	},
 
 	componentDidMount() {
-		MenuStore.addChangeListener(this._handleChange)
-		MenuActions.listFolders();
-	},
-
-	_handleChange() {
-		console.log(MenuStore.getRootFolder());
-		this.setState({
-			actualFolder: MenuStore.getRootFolder()
-		});
+		QuestionExplorerActions.listFolders();
 	},
 
 	render() {
-		var questions = (this.state.actualFolder == null) ? [] : this.state.actualFolder.questions;
-		var folders = (this.state.actualFolder == null) ? [] : this.state.actualFolder.folders;
+		var questions = (this.state.storeData.currentFolder == null) ? [] : this.state.storeData.currentFolder.questions;
+		var folders = (this.state.storeData.currentFolder == null) ? [] : this.state.storeData.currentFolder.folders;
 		return (
 			<div className="QuestionExplorer">
 				<div className="file-table">

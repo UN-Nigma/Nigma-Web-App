@@ -1,8 +1,5 @@
 import React from 'react';
-var MenuActions = require('../../../actions/menu-actions');
-
-
-
+const QuestionExplorerActions = require('../../../actions/questionExplorerActions');
 
 var Row = React.createClass({
 
@@ -18,8 +15,7 @@ var Row = React.createClass({
 	},
 
 	changeFolder(evt) {
-		console.log("working");
-		console.log(this.props.item);
+		QuestionExplorerActions.changeFolder(this.props.item._id)
 	},
 
 	openQuestion(evt) {
