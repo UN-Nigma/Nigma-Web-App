@@ -28,10 +28,10 @@ function bundleScripts(watch){
   }
 
   bundler
-    .transform(reactify)
     .transform(babelify.configure({
       only: /dev/
     }) )
+
 
 
   function rebundle() {
