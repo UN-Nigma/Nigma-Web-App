@@ -1,4 +1,6 @@
-import React from 'react';
+var React = require('react');
+var moment = require('moment');
+
 const QuestionExplorerActions = require('../../../actions/questionExplorerActions');
 
 var Row = React.createClass({
@@ -23,8 +25,9 @@ var Row = React.createClass({
 	},
 
 	selectRow(evt) {
+		var self = this;
 		this.setState({
-			selected: true
+			selected: !self.state.selected
 		});
 	},
 
@@ -42,18 +45,32 @@ var Row = React.createClass({
 
 		return (
 			<div className={`Row ${classSelected}`} onDoubleClick={onDoubleClickFunction} onClick={this.selectRow}>
-				<div className="cell name">
-					<i className="material-icons">{type}</i>
-					<span className="text">{this.props.item.name}</span>
+				<div className="cell">
+					<div className="name">
+						<i className="material-icons">{type}</i>
+						<span className="text">{this.props.item.name}</span>
+					</div>
 				</div>
-				<div className="cell owner">
+				<div className="cell">
 					<span className="text">{this.props.item.owner}</span>
 				</div>
-				<div className="cell created-at">
-					<span className="text">{this.props.item.created_at}</span>
+				<div className="cell">
+					<span className="text">
+						{
+							this.props.item.created_at != null ?
+								moment(this.props.item.created_at).format("MMM DD, YYYY") :
+								null
+						}
+					</span>
 				</div>
-				<div className="cell last-modified">
-					<span className="text">{this.props.item.update_at}</span>
+				<div className="cell">
+					<span className="text">
+					{
+						this.props.item.update_at != null ?
+							moment(this.props.item.update_at).format("MMM DD, YYYY") :
+							null
+					}
+					</span>
 				</div>
 			</div>
 		);
