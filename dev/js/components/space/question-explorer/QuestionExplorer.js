@@ -1,9 +1,14 @@
-import React from 'react';
-import Header from './Header'
-import Row from './Row'
+//Dep
+var React = require('react');
 var Reflux = require('reflux');
+//Components
+var Header = require('./Header');
+var Row =  require('./Row');
+var Navigator =  require('./Navigator');
+//Stores
 var QuestionExplorerActions = require('../../../actions/questionExplorerActions');
 var QuestionExplorerStore = require('../../../stores/questionExplorerStore');
+
 var QuestionExplorer = React.createClass({
 	mixins: [Reflux.connect(QuestionExplorerStore, 'storeData')],
 
@@ -20,6 +25,7 @@ var QuestionExplorer = React.createClass({
 		var folders = (this.state.storeData.currentFolder == null) ? [] : this.state.storeData.currentFolder.folders;
 		return (
 			<div className="QuestionExplorer">
+				<Navigator route={this.state.storeData.currentRoute} />
 				<div className="file-table">
 					<div className="headers">
 						<Header name="Nombre" clickable={true} clickAction={this.clickHeaderAction} />

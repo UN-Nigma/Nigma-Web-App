@@ -34,11 +34,10 @@ var QuestionExplorerStore = Reflux.createStore({
 		},
 
 		generateState() {
-			var currentFolder = this.currentFolder;
-			var currentRoute = this.currentRoute;
+			var self = this;
 			return {
-				currentFolder: currentFolder,
-				currentRoute: currentRoute
+				currentFolder: self.currentFolder,
+				currentRoute: self.currentRoute
 			};
 		},
 
@@ -52,12 +51,12 @@ var QuestionExplorerStore = Reflux.createStore({
 			}
 		},
 		generateRoute(folder, currentTree) {
-			var route = [{id: folder._id, name: folder.name}]
+			var route = [{_id: folder._id, name: folder.name}]
 			var parent = folder.parent_folder;
 			while(parent != null && parent != "") {
 				folder = currentTree[parent]
 				if(folder == null) break;
-				route.push({id: folder._id, name: folder.name});
+				route.push({_id: folder._id, name: folder.name});
 				parent = folder.parent_folder;
 			}
 			return route.reverse();
