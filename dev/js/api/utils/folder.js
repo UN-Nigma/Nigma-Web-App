@@ -28,23 +28,11 @@ const FolderAPI = {
   },
   createFolder(data, cb){
     const route = this._routes.create;
-    API.callAjaxRequest(route, data, (err, res) => {
-      if(err){
-        cb(true, null);
-      } else {
-        cb(!res.body.ok, res.body.folder);
-      }
-    });
+    return API.callAjaxRequest(route, data);
   },
   deleteFolder(data, cb){
     const route = this._routes.delete;
-    API.callAjaxRequest(route, data, (err, res) => {
-      if(err){
-        cb(true, null);
-      } else {
-        cb(!res.body.ok, res.body.ok);
-      }
-    });
+    return API.callAjaxRequest(route, data);
   },
   updateFolder(data, cb){
     const route = this._routes.update;

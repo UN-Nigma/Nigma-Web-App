@@ -20,6 +20,14 @@ var QuestionExplorer = React.createClass({
 		QuestionExplorerActions.listFolders();
 	},
 
+	createQuestion() {
+		QuestionExplorerActions.createQuestion("Nombre quemado", this.state.storeData.currentFolder._id);
+	},
+
+	createFolder() {
+		QuestionExplorerActions.createFolder("Nombre quemado", this.state.storeData.currentFolder._id);
+	},
+
 	render() {
 		var questions = (this.state.storeData.currentFolder == null) ? [] : this.state.storeData.currentFolder.questions;
 		var folders = (this.state.storeData.currentFolder == null) ? [] : this.state.storeData.currentFolder.folders;
@@ -32,13 +40,22 @@ var QuestionExplorer = React.createClass({
 						<Header name="Propietario" />
 						<Header name="Fecha de creación" clickable={true} clickAction={this.clickHeaderAction} />
 						<Header name="Ultima modificación" clickable={true} clickAction={this.clickHeaderAction} />
+						<Header name="Acciones" />
 					</div>
 
-					{folders.map((folder, index) => <Row type="folder" item={folder}  key={index}/>)}
-					{questions.map((question, index) => <Row type="question" item={question}  key={index}/>)}
+					{folders.map((folder, index) => <Row type="folder" item={folder}  key={index} index={index}/>)}
+					{questions.map((question, index) => <Row type="question" item={question}  key={index} index={index}/>)}
 				</div>
-
-			</div>
+				<div className="fixed-action-btn" style={{"bottom": "45", "right": "24"}}>
+				  <a className="btn-floating btn-large red">
+				    <i className="large material-icons">add</i>
+				  </a>
+				  <ul>
+				    <li><a className="btn-floating red" onClick={this.createQuestion}><i className="material-icons">help</i></a></li>
+				    <li><a className="btn-floating yellow darken-1" onClick={this.createFolder}><i className="material-icons">folder</i></a></li>
+				  </ul>
+			  </div>
+		  </div>
 		);
 	}
 });

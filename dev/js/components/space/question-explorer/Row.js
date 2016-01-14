@@ -31,6 +31,14 @@ var Row = React.createClass({
 		});
 	},
 
+	deleteItem(evt) {
+		if(this.props.type == "question") {
+			QuestionExplorerActions.deleteQuestion(this.props.item);
+		} else {
+			QuestionExplorerActions.deleteFolder(this.props.item);
+		}
+	},
+
 	render() {
 		var type = "", onDoubleClickFunction = null;
 		var classSelected = this.state.selected ? "selected" : "";
@@ -71,6 +79,12 @@ var Row = React.createClass({
 							null
 					}
 					</span>
+				</div>
+				<div className="cell">
+					<div className="buttons">
+						<a className="btn-floating btn-medium waves-effect waves-light green" onClick={onDoubleClickFunction}><i className="material-icons">publish</i></a>
+						<a className="btn-floating btn-medium waves-effect waves-light red" onClick={this.deleteItem}><i className="material-icons">delete</i></a>
+					</div>
 				</div>
 			</div>
 		);

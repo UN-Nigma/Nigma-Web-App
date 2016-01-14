@@ -44,19 +44,6 @@
 // 			})
 // 	},
 
-// 	deleteQuestion(index, question) {
-// 		QuestionAPI.deleteQuestion({questionId: question._id})
-// 			.then(function(res) {
-// 				Dispatcher.dispatch({
-// 					type: MenuActionConstants.DELETE_QUESTION,
-// 					question: question,
-// 					index: index,
-// 				});
-// 			})
-// 			.catch(function(error) {
-// 				console.error(error)
-// 			})
-// 	},
 
 // 	listFolders() {
 // 		FolderAPI.listFolders({})
