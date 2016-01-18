@@ -19,6 +19,11 @@ trim_trailing_whitespace = false
 indent_style = space
 indent_size = 2
 
+[*.styl]
+trim_trailing_whitespace = false
+indent_style = space
+indent_size = 2
+
 [*.coffee]
 trim_trailing_whitespace = false
 indent_style = space

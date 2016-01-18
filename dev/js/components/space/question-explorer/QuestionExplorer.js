@@ -7,33 +7,36 @@ var Row =  require('./Row');
 var Navigator =  require('./Navigator');
 //Stores
 var QuestionExplorerActions = require('../../../actions/questionExplorerActions');
-var QuestionExplorerStore = require('../../../stores/questionExplorerStore');
+
 
 var QuestionExplorer = React.createClass({
-	mixins: [Reflux.connect(QuestionExplorerStore, 'storeData')],
-
+	getDefaultProps: function() {
+		return {
+			storeData: {}
+		};
+	},
 	clickHeaderAction(evt) {
 		console.log(evt.target);
 	},
 
 	componentDidMount() {
-		QuestionExplorerActions.listFolders();
+		console.log("lol")
+		QuestionExplorerActions.listMyFolders();
 	},
 
 	createQuestion() {
-		QuestionExplorerActions.createQuestion("Nombre quemado", this.state.storeData.currentFolder._id);
+		QuestionExplorerActions.createQuestion("Nombre quemado", this.props.storeData.currentFolder._id);
 	},
 
 	createFolder() {
-		QuestionExplorerActions.createFolder("Nombre quemado", this.state.storeData.currentFolder._id);
+		QuestionExplorerActions.createFolder("Nombre quemado", this.props.storeData.currentFolder._id);
 	},
 
 	render() {
-		var questions = (this.state.storeData.currentFolder == null) ? [] : this.state.storeData.currentFolder.questions;
-		var folders = (this.state.storeData.currentFolder == null) ? [] : this.state.storeData.currentFolder.folders;
+		var questions = (this.props.storeData.currentFolder == null) ? [] : this.props.storeData.currentFolder.questions;
+		var folders = (this.props.storeData.currentFolder == null) ? [] : this.props.storeData.currentFolder.folders;
 		return (
 			<div className="QuestionExplorer">
-				<Navigator route={this.state.storeData.currentRoute} />
 				<div className="file-table">
 					<div className="headers">
 						<Header name="Nombre" clickable={true} clickAction={this.clickHeaderAction} />

@@ -17,13 +17,21 @@ const FolderAPI = {
       route: "/users/folders",
       method: API._REQUEST_METHOD.get
     },
+    listSharedFolders: {
+      route: "/users/folders/shared-with-me",
+      method: API._REQUEST_METHOD.get
+    },
     share: {
       route: "/users/folders/:folderid",
       method: API._REQUEST_METHOD.post,
     }
   },
-  listFolders(data, cb){
+  listFolders(data){
     const route = this._routes.list;
+    return API.callAjaxRequest(route, data);
+  },
+  listSharedFolders(data){
+    const route = this._routes.listSharedFolders;
     return API.callAjaxRequest(route, data);
   },
   createFolder(data, cb){

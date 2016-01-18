@@ -15,10 +15,22 @@ var QuestionExplorerStore = Reflux.createStore({
 		return this.generateState();
 	},
 
-	listFolders() {
+	listMyFolders() {
 		var self = this;
 		FolderAPI.listFolders({}).then(function(res) {
 			res.root_folder.name = "Mis preguntas";
+			self.currentFolder = res.root_folder;
+			self.formatTreeStructure(res.root_folder);
+			self.currentRoute = self.generateRoute(self.currentFolder, self.userFoldersTree);
+			self.trigger(self.generateState());
+		}).catch(function(error) {
+			console.error(error);
+		});
+	},
+	listSharedFolders() {
+		var self = this;
+		FolderAPI.listSharedFolders({}).then(function(res) {
+			res.root_folder.name = "Compartidas conmigo";
 			self.currentFolder = res.root_folder;
 			self.formatTreeStructure(res.root_folder);
 			self.currentRoute = self.generateRoute(self.currentFolder, self.userFoldersTree);
