@@ -5,6 +5,10 @@ const FolderAPI = {
       route: "/folders/:folderid/folders",
       method: API._REQUEST_METHOD.post
     },
+    get: {
+      route: "/folders/:folderid",
+      method: API._REQUEST_METHOD.get
+    },
     update: {
       route: "/folders/:folderid",
       method: API._REQUEST_METHOD.put
@@ -34,6 +38,12 @@ const FolderAPI = {
     const route = this._routes.listSharedFolders;
     return API.callAjaxRequest(route, data);
   },
+
+	getFolder(data){
+    const route = this._routes.get;
+    return API.callAjaxRequest(route, data);
+  },
+
   createFolder(data, cb){
     const route = this._routes.create;
     return API.callAjaxRequest(route, data);

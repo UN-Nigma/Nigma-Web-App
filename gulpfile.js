@@ -2,17 +2,16 @@ var gulp       = require("gulp"),
     source     = require("vinyl-source-stream"),
     browserify = require("browserify"),
     watchify   = require("watchify"),
-    reactify   = require("reactify"),
     babelify   = require("babelify"),
     concat     = require("gulp-concat"),
-    stylus     = require("gulp-stylus"),
+    sass     = require("gulp-sass"),
+    sourcemaps     = require("gulp-sourcemaps"),
     uglify     = require("gulp-uglify"),
     webserver  = require("gulp-webserver"),
     stripdebug = require("gulp-strip-debug"),
     htmlmin    = require("gulp-htmlmin"),
     gutil      = require("gulp-util"),
-    rename     = require("gulp-rename"),
-    nib        = require("nib");
+    rename     = require("gulp-rename");
 
 
 function bundleScripts(watch){
@@ -22,11 +21,9 @@ function bundleScripts(watch){
     packageCache: {},
     fullPaths: true
   });
-
   if(watch) {
     bundler = watchify(bundler);
   }
-
   bundler
     .transform(babelify.configure({
       only: /dev/
@@ -69,13 +66,11 @@ gulp.task('browserify',function(){
  * pre-compile stylus to CSS
  */
 
-gulp.task('stylus', function() {
-  gulp.src('dev/styl/main.styl')
-    .pipe(stylus({
-      compress: true,
-      use: nib()
-    }))
-    .pipe(concat('main.css'))
+gulp.task('sass', function() {
+  return gulp.src('dev/style/main.sass')
+  	.pipe(sourcemaps.init())
+    .pipe(sass({includePaths: ['bower_components/bourbon/app/assets/stylesheets', 'bower_components/neat/app/assets/stylesheets']}))
+  	.pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('dist/css'))
 });
 
@@ -110,6 +105,7 @@ gulp.task('ckeditor', function() {
  */
 
 gulp.task('server', function() {
+	console.log("Im here")
   gulp.src('dist')
     .pipe(webserver({
       livereload: true,
@@ -141,12 +137,13 @@ gulp.task('html', function(){
 
 gulp.task('watch', function() {
   bundleScripts(true);
-  gulp.watch('dev/styl/**/*.styl', ['stylus']);
+  gulp.watch('dev/js/**/*.js', ['browserify']);
+  gulp.watch('dev/style/**/*.sass', ['sass']);
   gulp.watch('dev/js/libs/**/*.js', ['ckeditor']);
   gulp.watch('dev/**/*.html', ['html']);
   gulp.watch('dev/images/**.*', ['images']);
 })
 
 
-gulp.task('build', ['images', 'stylus', 'ckeditor', 'html', 'browserify']);
+gulp.task('build', ['images', 'sass', 'ckeditor', 'html', 'browserify']);
 gulp.task('dev', ['build', 'server', 'watch']);

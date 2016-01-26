@@ -1,8 +1,6 @@
 const React = require("react");
 const Router = require("react-router");
-const mui = require("material-ui");
 const TopBar = require("./topbar.js");
-const ThemeMixin = require("../mixins/ui-theme");
 const Auth = require("../utils/auth");
 const UserStore = require('../stores/user');
 const UserActions = require('../actions/user');
@@ -11,7 +9,7 @@ const injectTapEventPlugin = require("react-tap-event-plugin");
 
 const Nigma = React.createClass({
 
-  mixins: [ThemeMixin, Router.Navigation, Router.State],
+  mixins: [Router.Navigation, Router.State],
 
   getInitialState() {
     return {

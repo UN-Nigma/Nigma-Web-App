@@ -120,7 +120,8 @@ var MenuActions = Reflux.createActions([
 	"deleteFolder",
 	"shareQuestion",
 	"shareFolder",
-	"changeFolder"
+	"changeFolder",
+	"sortData"
 ]);
 
 

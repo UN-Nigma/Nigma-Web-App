@@ -1,0 +1,114 @@
+@import "bourbon"
+@import "neat"
+@import "../mdi"
+.QuestionExplorer
+  display: flex
+  width: 100%
+  flex-direction: column
+  .file-table
+    display: table
+    table-layout: fixed
+    width: 100%
+
+    .headers
+      background-color: rgb(250,250,250)
+      position: relative
+      width: 100%
+      display: table-header-group
+
+      .header
+        display: table-cell
+        height: 48px
+        box-sizing: border-box
+        background-color: #fafafa
+        vertical-align: middle
+        border-bottom: 1px solid #eee
+        .title
+          line-height: 48px
+          text-align: left
+          padding-left: 16px
+          font-size: 13px
+          @include display(flex)
+          @include flex-direction(row)
+          @include justify-content(flex-start);
+          @include align-items(center);
+
+        &.clickable, &.clickable.clicked.up, &.clickable.clicked.down
+          cursor: pointer
+          &:hover
+            background-color: #eee
+        
+        &.clickable.clicked
+          font-weight: bold
+          &.up, &.down
+            .title:after
+              font-family: 'Material Icons'
+              -webkit-font-feature-settings: 'liga'
+              font-size: 18px
+              margin-left: 5px
+          &.up
+            .title:after
+              content: "arrow_upward"
+
+          &.down
+            .title:after
+              content: "arrow_downward"
+          
+            
+
+
+  .Row
+    display: table-row
+    width: 100%
+    height: 48px
+    max-height: 48px
+    box-sizing: border-box
+    background-color: #fff
+    
+
+    .cell
+      display: table-cell
+      width: 100%
+      height: 100%
+      line-height: 48px
+      height: 48px
+      max-height: 48px
+      text-align: left
+      font-size: 13px
+      border-bottom: 1px solid #eee
+      vertical-align: middle
+      padding-left: 16px
+      box-sizing: border-box
+      overflow: hidden
+      .name
+        @include display(flex)
+        @include flex-direction(row)
+        @include justify-content(flex-start);
+        @include align-items(flex-start);
+        max-height: 44px
+        height: 44px
+        .material-icons
+          font-size: 25px
+          margin: auto 0
+          padding: 5px
+
+        .text
+          margin-left: 5px
+
+      .buttons
+        display: flex
+        flex-direction: row
+        a
+          margin-left: 5px
+          margin-right: 5px
+          z-index: 4
+  .Row.selected
+    background-color: #4285F4
+    color: white
+    .cell
+      border-bottom: none
+      .name
+        .material-icons
+          color: black
+          border-radius: 50%
+          background-color: white

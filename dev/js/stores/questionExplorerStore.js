@@ -7,9 +7,9 @@ const QuestionAPI = require('../api/utils/question');
 
 var QuestionExplorerStore = Reflux.createStore({
 	listenables: [QuestionExplorerActions],
-	userFoldersTree: {},
 	currentRoute: [],
 	currentFolder: null,
+	sortOptions: {field: "name", order: 1}
 	init() {},
 	getInitialState() {
 		return this.generateState();
@@ -18,10 +18,8 @@ var QuestionExplorerStore = Reflux.createStore({
 	listMyFolders() {
 		var self = this;
 		FolderAPI.listFolders({}).then(function(res) {
-			res.root_folder.name = "Mis preguntas";
 			self.currentFolder = res.root_folder;
-			self.formatTreeStructure(res.root_folder);
-			self.currentRoute = self.generateRoute(self.currentFolder, self.userFoldersTree);
+			self.currentRoute = self.generateRoute(self.currentFolder);
 			self.trigger(self.generateState());
 		}).catch(function(error) {
 			console.error(error);
@@ -30,9 +28,7 @@ var QuestionExplorerStore = Reflux.createStore({
 	listSharedFolders() {
 		var self = this;
 		FolderAPI.listSharedFolders({}).then(function(res) {
-			res.root_folder.name = "Compartidas conmigo";
 			self.currentFolder = res.root_folder;
-			self.formatTreeStructure(res.root_folder);
 			self.currentRoute = self.generateRoute(self.currentFolder, self.userFoldersTree);
 			self.trigger(self.generateState());
 		}).catch(function(error) {
@@ -40,10 +36,16 @@ var QuestionExplorerStore = Reflux.createStore({
 		});
 	},
 
-	changeFolder(folderId) {
-		this.currentFolder = this.userFoldersTree[folderId];
-		this.currentRoute = this.generateRoute(this.currentFolder, this.userFoldersTree);
-		this.trigger(this.generateState());
+	changeFolder(folderid) {
+		var self = this;
+		FolderAPI.getFolder({folderid: folderid}).then(function(res) {
+			var folder = res.folder;
+			self.currentFolder = folder;
+			self.currentRoute = self.generateRoute(self.currentFolder);
+			self.trigger(self.generateState());
+		}).catch(function(error) {
+			console.error(error);
+		})
 	},
 
 	createQuestion(questionName, parentFolderId) {
@@ -77,7 +79,6 @@ var QuestionExplorerStore = Reflux.createStore({
 		.then(function(res) {
 			var folder = res.folder;
 			self.currentFolder.folders.push(folder);
-			self.userFoldersTree[folder._id] = folder;
 			self.trigger(self.generateState());
 		})
 		.catch(function(error) {
@@ -102,12 +103,25 @@ var QuestionExplorerStore = Reflux.createStore({
 		FolderAPI.deleteFolder({folderid: folder._id})
 		.then(function(res) {
 			self.currentFolder.folders = self.currentFolder.folders.filter((directory) => (directory._id != folder._id));
-			delete self.userFoldersTree[folder._id];
 			self.trigger(self.generateState());
 		})
 		.catch(function(error) {
 			console.error(error)
 		});
+	},
+
+	sortData(field, order) {
+		var sortFunction = function(q1, q2) {
+			if(q1[field] > q2[field])
+				return 1*order;
+			else if (q1[field] < q2[field])
+				return -1*order;
+			else
+				return 0;
+		};
+		this.currentFolder.questions.sort(sortFunction);
+		this.currentFolder.folders.sort(sortFunction);
+		this.trigger(this.generateState());
 	},
 
 	//Helpers
@@ -129,14 +143,12 @@ var QuestionExplorerStore = Reflux.createStore({
 				this.formatTreeStructure(folders[i]);
 		}
 	},
-	generateRoute(folder, currentTree) {
+	generateRoute(folder) {
 		var route = [{_id: folder._id, name: folder.name}]
 		var parent = folder.parent_folder;
-		while(parent != null && parent != "") {
-			folder = currentTree[parent]
-			if(folder == null) break;
-			route.push({_id: folder._id, name: folder.name});
-			parent = folder.parent_folder;
+		while(parent != undefined && parent != null && parent != "") {
+			route.push({_id: parent._id, name: parent.name});
+			parent = parent.parent_folder;
 		}
 		return route.reverse();
 	}

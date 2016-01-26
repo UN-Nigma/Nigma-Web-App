@@ -1,0 +1,136 @@
+.Formulation
+  padding: 15px
+  background-color: #fff
+
+
+  &-ContentEditable
+    min-height: 100px
+    border: 1px solid $gray
+    background: $ligth-gray
+    padding: 10px
+    color: $darkness-gray
+    margin-bottom: 15px
+
+    &focus
+      border: 2px solid $gray
+      color: black
+
+  &-CKEditor
+    border-right: 1px solid $gray
+    border-left: 1px solid $gray
+
+  &-ExpresionGenerator
+    min-height: 100px
+    border: 1px solid $gray
+    background: $ligth-gray
+    width: 100%
+
+  .Button
+    margin-right: 10px
+
+  &-AnswerContainer
+    padding: 10px
+    background-color: #fff
+    .actions-container
+      float: right
+      .material-icons
+        cursor: pointer
+        color: $action-color
+        font-size: 1.5rem
+        display: inline-block
+        z-index: 10
+
+
+    &-Validation
+      text-align: right
+      .material-icons
+        cursor: pointer
+        color: $action-color
+        font-size: 2rem
+    .empty-text
+      color: $action-color
+      cursor: pointer
+      font-size: $MediumFontSize
+      text-align: center
+
+    &-Answer
+      .bold
+        font-weight: bold
+      .header
+        .title
+          font-size: $MediumFontSize
+          font-weight: bold
+
+      .general-information
+        .create-btn
+          margin-top: 30px
+        .answers-names-container
+          margin-top: 15px
+          .answer-name
+            display: inline-block
+            min-width: 50px
+            height: 50px
+            border: 1px dashed
+            border-radius: 4px
+            margin-left: 10px
+            margin-right: 10px
+            position: relative
+            .name
+              text-align: center
+              margin-top: 5px
+              font-weight: bold
+              font-size: 20px
+            .actions
+              position: relative
+              i: text-align center
+                width: 50%
+                display: inline-block
+                cursor: pointer
+                color: $action-color
+                font-size: 20px
+
+      .correct-values-container
+        .button-actions
+          text-align: right
+          .btn-actions
+            cursor: pointer
+            color: $action-color
+
+        .correct-value
+          margin-left: 5px
+          margin-right: 5px
+          width: 100px
+          max-width: 100px
+          display: inline-block
+        .actions
+          margin-top: 5px
+          text-align: right
+          margin-bottom: 5px
+
+      .common-errors-container
+        .common-error
+          .actions
+            text-align: right
+            cursor: pointer
+            color: $action-color
+          .common-error-value
+            margin-left: 5px
+            margin-right: 5px
+            width: 100px
+            max-width: 100px
+            display: inline-block
+        .actions
+          margin-top: 5px
+          text-align: right
+          margin-bottom: 5px
+
+
+      .collapsible-body
+        .main-answer-content
+          margin-top: 0px
+          margin-bottom: 0px
+          .collection-item
+            padding-bottom: 0px
+            .row
+              margin-bottom: 3px
+

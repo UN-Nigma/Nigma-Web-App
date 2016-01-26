@@ -1,0 +1,26 @@
+{
+  "name": "nigma",
+  "description": "Authoring Tool for create interactive math exercises with genuine error",
+  "main": "gulpfile.js",
+  "authors": [
+    "jeisonhs93@gmail.com",
+    "jonathanvm13@gmail.com",
+    "nickforspeed25@gmail.com"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/UN-Nigma/Nigma-Web-App",
+  "moduleType": [
+    "node"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "neat": "~1.7.2"
+  }
+}

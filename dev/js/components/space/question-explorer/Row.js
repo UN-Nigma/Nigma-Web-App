@@ -2,9 +2,9 @@ var React = require('react');
 var moment = require('moment');
 
 const QuestionExplorerActions = require('../../../actions/questionExplorerActions');
-
+import {Navigation} from 'react-router';
 var Row = React.createClass({
-
+	mixins: [Navigation],
 	getInitialState: function() {
 		return {
 			selected: false
@@ -17,7 +17,9 @@ var Row = React.createClass({
 	},
 
 	changeFolder(evt) {
-		QuestionExplorerActions.changeFolder(this.props.item._id)
+		//QuestionExplorerActions.changeFolder(this.props.item._id)
+		this.transitionTo(`/space/u/folder/${this.props.item._id}`);
+
 	},
 
 	openQuestion(evt) {
@@ -60,7 +62,7 @@ var Row = React.createClass({
 					</div>
 				</div>
 				<div className="cell">
-					<span className="text">{this.props.item.owner}</span>
+					<span className="text">{this.props.item.owner.name}</span>
 				</div>
 				<div className="cell">
 					<span className="text">
@@ -75,7 +77,7 @@ var Row = React.createClass({
 					<span className="text">
 					{
 						this.props.item.update_at != null ?
-							moment(this.props.item.update_at).format("MMM DD, YYYY") :
+							moment(this.props.item.updated_at).format("MMM DD, YYYY") :
 							null
 					}
 					</span>

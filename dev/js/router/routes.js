@@ -10,6 +10,7 @@ const Routes = (
   <Route name="nigma" path="/" handler={Nigma}>
     <Route name="signin" path="login/:token" handler={SignIn} />
     <Route name="space" path="space" handler={Space} />
+    <Route name="spaceFolder" path="space/u/folder/:folderId" handler={Space} />
     <DefaultRoute 	handler={Space}/>
   </Route>
 )

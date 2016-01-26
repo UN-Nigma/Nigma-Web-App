@@ -6,26 +6,26 @@ var Header = React.createClass({
 		name: React.PropTypes.string.isRequired,
 		clickable: React.PropTypes.bool,
 		clickAction: React.PropTypes.func,
+		clicked: React.PropTypes.bool
 	},
 
 	getDefaultProps() {
 		return {
 			clickable: false,
+			clicked: false,
 			clickAction: function() {}
 		}
 	},
 
-	getInitialState() {
-		return {
-			clicked: true
-		};
-	},
 
 	render() {
 		var clickable = (this.props.clickable) ? "clickable" : "";
+		if(this.props.clickable && this.props.clickedState.clicked) {
+			clickable = `${clickable} clicked ${this.props.clickedState.status}`
+		}
 		return (
-			<div className={`header ${clickable}`}>
-				<div className="title">
+			<div data-index={this.props.index} className={`header ${clickable}`} onClick={this.props.clickAction}>
+				<div className="title" data-index={this.props.index}>
 					{this.props.name}
 				</div>
 			</div>

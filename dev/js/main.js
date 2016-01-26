@@ -4,15 +4,8 @@ const router 	 = require('./router/router');
 //const ckeditor = require('./utils/ckeditor');
 
 
-$(document).ready(()=>{
-	$(".dropdown-button").dropdown();
-});
 
 router.run( function ( Handler, state ) {
-
-	$(document).on("ready",()=>{
-		$('.dropdown-button').dropdown();
-	});
 
 	React.render(
 		<Handler />,
