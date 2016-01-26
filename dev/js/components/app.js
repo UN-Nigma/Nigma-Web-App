@@ -1,6 +1,5 @@
 const React = require("react");
 const Router = require("react-router");
-const TopBar = require("./topbar.js");
 const Auth = require("../utils/auth");
 const UserStore = require('../stores/user');
 const UserActions = require('../actions/user');
@@ -44,7 +43,6 @@ const Nigma = React.createClass({
   render(){
     return (
       <div className="Nigma">
-        <TopBar user={this.state.user}/>
         <RouteHandler />
       </div>
     )

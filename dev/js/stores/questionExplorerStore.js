@@ -9,7 +9,7 @@ var QuestionExplorerStore = Reflux.createStore({
 	listenables: [QuestionExplorerActions],
 	currentRoute: [],
 	currentFolder: null,
-	sortOptions: {field: "name", order: 1}
+	sortOptions: {field: "name", order: 1},
 	init() {},
 	getInitialState() {
 		return this.generateState();
@@ -42,6 +42,7 @@ var QuestionExplorerStore = Reflux.createStore({
 			var folder = res.folder;
 			self.currentFolder = folder;
 			self.currentRoute = self.generateRoute(self.currentFolder);
+			self.sort(self.sortOptions.field, self.sortOptions.order);
 			self.trigger(self.generateState());
 		}).catch(function(error) {
 			console.error(error);
@@ -111,18 +112,15 @@ var QuestionExplorerStore = Reflux.createStore({
 	},
 
 	sortData(field, order) {
-		var sortFunction = function(q1, q2) {
-			if(q1[field] > q2[field])
-				return 1*order;
-			else if (q1[field] < q2[field])
-				return -1*order;
-			else
-				return 0;
-		};
-		this.currentFolder.questions.sort(sortFunction);
-		this.currentFolder.folders.sort(sortFunction);
+		this.sort(field, order);
+		this.sortOptions = {
+			field: field,
+			order: order
+		}
 		this.trigger(this.generateState());
 	},
+
+
 
 	//Helpers
 
@@ -133,16 +131,6 @@ var QuestionExplorerStore = Reflux.createStore({
 			currentRoute: self.currentRoute
 		};
 	},
-
-	formatTreeStructure(rootFolder) {
-		if(rootFolder != undefined && rootFolder != null && rootFolder._id != undefined && rootFolder._id != null){
-			var tree = {};
-			this.userFoldersTree[rootFolder._id] = rootFolder;
-			var folders = rootFolder.folders;
-			for(var i = 0;i < folders.length; i++)
-				this.formatTreeStructure(folders[i]);
-		}
-	},
 	generateRoute(folder) {
 		var route = [{_id: folder._id, name: folder.name}]
 		var parent = folder.parent_folder;
@@ -151,6 +139,19 @@ var QuestionExplorerStore = Reflux.createStore({
 			parent = parent.parent_folder;
 		}
 		return route.reverse();
+	},
+
+	sort(field, order) {
+		var sortFunction = function(q1, q2) {
+			if(q1[field] > q2[field])
+				return 1*order;
+			else if (q1[field] < q2[field])
+				return -1*order;
+			else
+				return 0;
+		};
+		this.currentFolder.questions.sort(sortFunction);
+		this.currentFolder.folders.sort(sortFunction);
 	}
 });
 

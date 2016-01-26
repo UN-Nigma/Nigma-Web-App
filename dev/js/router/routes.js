@@ -11,6 +11,7 @@ const Routes = (
     <Route name="signin" path="login/:token" handler={SignIn} />
     <Route name="space" path="space" handler={Space} />
     <Route name="spaceFolder" path="space/u/folder/:folderId" handler={Space} />
+    <Route name="spaceFolder" path="space/u/question/:questionId" handler={Space} />
     <DefaultRoute 	handler={Space}/>
   </Route>
 )
