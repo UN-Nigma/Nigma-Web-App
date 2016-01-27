@@ -31,6 +31,7 @@
     "react-tap-event-plugin": "0.1.7",
     "reflux": "^0.3.0",
     "superagent": "^1.2.0",
+    "underscore": "^1.8.3",
     "uniqid": "^1.0.0"
   },
   "devDependencies": {

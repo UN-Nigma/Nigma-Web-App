@@ -44,3 +44,60 @@
 .alert-message.positive
   background-color: #43a047
   border-color: #43a047
+
+.Collapsible
+  width: 100%
+  border-left: 1px solid #e5e5e5
+  border-right: 1px solid #e5e5e5
+  border-radius: 4px
+  padding: 0
+  li.item
+    list-style-type: none
+  .item
+    width: 100%
+    position: relative
+    .title
+      @include display(flex)
+      @include flex-direction(row)
+      @include justify-content(flex-start)
+      @include align-items(center)
+      height: 50px
+      cursor: pointer
+      padding: 10px
+      border-bottom: 1px solid #e5e5e5
+      border-top: 1px solid #e5e5e5
+      .icon
+        margin-right: 5px
+        font-size: 25px
+      .text
+        margin-left: 5px
+        font-size: 25px
+        font-weight: 200
+      &:hover
+        .text
+          font-weight: 400
+
+
+    .collapsible-content
+      @include transition-property(max-height)
+      @include transition-duration(0.5s)
+      @include transition-timing-function(cubic-bezier(0, 1.05, 0, 1))
+      @include transition-delay(0)
+      max-height: 0px
+      margin: 0
+      overflow: hidden
+
+    &.c-show
+      .title
+        .text
+          font-weight: 400
+      .collapsible-content
+        max-height: 1000px
+        @include transition-property(max-height)
+        @include transition-duration(0.5s)
+        @include transition-timing-function(ease-in)
+        @include transition-delay(0)
+        padding: 5px
+
+  .item
+

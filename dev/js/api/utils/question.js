@@ -1,7 +1,10 @@
 const API = require('../API');
 const QuestionAPI = {
   _routes: {
-
+    get: {
+      route: "/questions/:questionId",
+      method: API._REQUEST_METHOD.get,
+    },
     create: {
       route: "/folders/:folderid/questions",
       method: API._REQUEST_METHOD.post
@@ -39,6 +42,10 @@ const QuestionAPI = {
   },
   createQuestion(data){
     const route = this._routes.create;
+    return API.callAjaxRequest(route, data);
+  },
+  loadQuestion(data){
+    const route = this._routes.get;
     return API.callAjaxRequest(route, data);
   },
   updateQuestionData(data, cb){

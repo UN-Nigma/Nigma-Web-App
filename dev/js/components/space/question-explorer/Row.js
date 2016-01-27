@@ -23,7 +23,7 @@ var Row = React.createClass({
 	},
 
 	openQuestion(evt) {
-
+		this.transitionTo(`/space/u/question/${this.props.item._id}`);
 	},
 
 	selectRow(evt) {
