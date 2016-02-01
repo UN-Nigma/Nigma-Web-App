@@ -3,6 +3,12 @@ var Reflux = require('reflux');
 var QuestionEditorStore = require('../../../stores/QuestionEditorStore');
 var QuestionEditorActions = require('../../../actions/QuestionEditorActions');
 var Collapsible = require('../../util/collapsible');
+
+/*  Question editor  components*/
+var VariableEditor = require('./VariableEditor');
+var AnswerEditor = require('./AnswerEditor');
+
+
 var QuestionEditor = React.createClass({
 	mixins: [Reflux.connect(QuestionEditorStore, 'storeData')],
 	componentWillMount() {
@@ -14,29 +20,30 @@ var QuestionEditor = React.createClass({
 
 	getSections() {
 		var sections = [];
+		var currentQuestion = this.state.storeData.currentQuestion;
 		sections.push({
 			title: "Variables",
 			icon: "help",
-			content: (<div><h1>Variables</h1></div>)
+			content: (<VariableEditor question={currentQuestion} />)
 		})
 
-		sections.push({
-			title: "Formulación",
-			icon: "edit",
-			content: (<div><h1>Formulación</h1></div>)
-		})
+		// sections.push({
+		// 	title: "Formulación",
+		// 	icon: "edit",
+		// 	content: (<div><h1>Formulación</h1></div>)
+		// })
 
 		sections.push({
 			title: "Respuestas",
 			icon: "done",
-			content: (<div><h1>Respuestas</h1></div>)
+			content: (<AnswerEditor question={currentQuestion} />)
 		})
 
-		sections.push({
-			title: "Metadatos",
-			icon: "person",
-			content: (<div><h1>Metadatos</h1></div>)
-		})
+		// sections.push({
+		// 	title: "Metadatos",
+		// 	icon: "person",
+		// 	content: (<div><h1>Metadatos</h1></div>)
+		// })
 
 		return sections;
 	},

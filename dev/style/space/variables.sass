@@ -1,32 +1,36 @@
-.Variables
-  margin-bottom: 30px
-  background: white
-  &-Header
-    height: 50px
-    padding: 0 10px
-    line-height: 50px
-
-    &__brand
-      font-weight: bold
-      font-size: $MediumFontSize !important
-
-  &-Content
-    padding: 15px
-
-    textarea: height 200px
-
-    &-actions
-
-      &__create
-        text-align: left
-        .material-icons
-          cursor: pointer
-          color: $action-color
-
-      &__check_save
-        text-align: right
-        .material-icons
-          cursor: pointer
-          color: $action-color
-
-
+.QuestionEditor
+  .variables
+    min-height: 150px
+    position: relative
+    margin: 10px
+  .editor
+    margin-top: 10px
+    height: 200px
+    width: 100%
+    position: relative
+    #editor
+      position: absolute
+      top: 0
+      right: 0
+      bottom: 0
+      left: 0
+      font-size: 14px
+  .actions
+    margin: 10px
+    width: 100%
+    text-align: right
+    .confirm-button
+      padding: 5px
+      border-radius: 4px
+      border: 1px solid transparent
+      color: white
+      background-color: #3e8e41
+      height: 40px
+      margin-right: 10px
+      .flex
+        @include display(flex)
+        @include flex-direction(row)
+        @include justify-content(flex-start);
+        @include align-items(center);
+        .text
+          padding-left: 5px

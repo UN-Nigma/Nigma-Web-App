@@ -3,7 +3,7 @@ var _ = require('underscore');
 var Collapsible = React.createClass({
 	getInitialState: function() {
 		return {
-			open: [] 
+			open: []
 		};
 	},
 	toggle(evt) {
@@ -11,14 +11,13 @@ var Collapsible = React.createClass({
 		var index = Number(target.getAttribute("data-index"));
 		var open = this.state.open;
 		var indexInVector = _.indexOf(open, index);
-		console.log(target, open)
 		if(indexInVector != -1) {
 			open.splice(indexInVector, 1);
 		} else {
 			open.push(index);
 		}
 		this.setState({
-			open: open 
+			open: open
 		});
 	},
 	render() {

@@ -46,7 +46,7 @@ function bundleScripts(watch){
     .pipe(gulp.dest('dist/js'));
   }
 
-  bundler.on('update',rebundle);
+  //bundler.on('update',rebundle);
   return rebundle();
 };
 
@@ -56,7 +56,7 @@ function bundleScripts(watch){
  * Run Browserify
  */
 gulp.task('browserify',function(){
-  return bundleScripts(false);
+  return bundleScripts(true);
 });
 
 
@@ -105,7 +105,6 @@ gulp.task('ckeditor', function() {
  */
 
 gulp.task('server', function() {
-	console.log("Im here")
   gulp.src('dist')
     .pipe(webserver({
       livereload: true,

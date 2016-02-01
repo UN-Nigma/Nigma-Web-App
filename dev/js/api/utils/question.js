@@ -32,12 +32,12 @@ const QuestionAPI = {
 
     validateVariables: {
       route: "/questions/:questionId/variables/validate",
-      method: API._REQUEST_METHOD.post
+      method: API._REQUEST_METHOD.put
     },
 
     validateAnswers: {
       route: "/questions/:questionId/answers/validate",
-      method: API._REQUEST_METHOD.post
+      method: API._REQUEST_METHOD.put
     }
   },
   createQuestion(data){
@@ -89,17 +89,11 @@ const QuestionAPI = {
     const route = this._routes.delete;
     return API.callAjaxRequest(route, data);
   },
-  validateVariables(data, cb){
+  validateVariables(data){
     const route = this._routes.validateVariables;
-    API.callAjaxRequest(route, data, (err, res) => {
-      if(err){
-        cb(true, null);
-      } else {
-        cb(!res.body.ok, res.body);
-      }
-    });
+    return API.callAjaxRequest(route, data);
   },
-  validateAnswers(data, cb){
+  validateAnswers(data){
     const route = this._routes.validateAnswers;
     API.callAjaxRequest(route, data, (err, res) => {
       if(err){

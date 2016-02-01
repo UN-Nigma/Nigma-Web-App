@@ -3,7 +3,7 @@
 
 @keyframes spin
   0%
-    transform: rotate(359deg)
+    transform: rotate(-359deg)
   100%
     transform: rotate(0deg)
 
@@ -47,8 +47,7 @@
 
 .Collapsible
   width: 100%
-  border-left: 1px solid #e5e5e5
-  border-right: 1px solid #e5e5e5
+  border: 1px solid #e5e5e5
   border-radius: 4px
   padding: 0
   li.item
@@ -56,6 +55,9 @@
   .item
     width: 100%
     position: relative
+    &:first-child
+      .title
+        border-top: none
     .title
       @include display(flex)
       @include flex-direction(row)
@@ -64,8 +66,9 @@
       height: 50px
       cursor: pointer
       padding: 10px
-      border-bottom: 1px solid #e5e5e5
       border-top: 1px solid #e5e5e5
+      
+      
       .icon
         margin-right: 5px
         font-size: 25px
@@ -89,6 +92,7 @@
 
     &.c-show
       .title
+        border-bottom: 1px solid #e5e5e5
         .text
           font-weight: 400
       .collapsible-content
@@ -100,4 +104,95 @@
         padding: 5px
 
   .item
+
+.dropdown
+  position: relative
+  display: inline-block
+  .button
+    background-color: #4CAF50
+    color: white
+    @include display(flex)
+    @include flex-direction(row)
+    @include justify-content(flex-start)
+    @include align-items(center)
+    padding: 5px
+    box-sizing: border-box
+    height: 40px
+    border-radius: 4px
+    border: 1px solid transparent
+    &:hover, &:focus
+      color: white
+      background-color: #3e8e41
+      outline: none
+    .text
+      margin-left: 10px
+    
+  .content
+    position: absolute
+    top: 100%
+    left: 0
+    margin: 0
+    z-index: 11
+    position: absolute
+    top: 40px
+    list-style-type: none
+    padding: 0
+    width: 186px
+    border: none
+    max-height: 0px   
+    height: 0px 
+    @include transition(max-height 0.3s ease)
+    overflow: hidden
+    .option
+      width: 100%
+      z-index: 12
+
+      cursor: pointer
+      color: black
+      background-color: white
+      height: 40px
+      line-height: 40px
+      padding-left: 10px  
+      border: none
+      &:hover
+        background-color: #3e8e41
+        color: white
+  &.d-show
+    .button
+      border-bottom-left-radius: 0px
+      border-bottom-right-radius: 0px
+    .content
+      max-height: 300px
+      height: auto
+      border: 1px solid #e5e5e5
+      border-top: none
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2)
+      @include transition(max-height 0.3s ease-in)
+
+
+.loader
+  position: fixed
+  top: 0
+  right: 0
+  left: 0
+  bottom: 0
+  z-index: 20
+  background-color: rgba(128,128,128,0.8)
+  @include align-items(center)
+  @include display(flex)
+  @include flex-direction(column)
+  @include justify-content(center)
+  .message, .timer
+    color: white
+    font-weight: 400
+    font-size: 30px
+    margin-top: 10px
+  .timer
+    font-size: 35px
+  .icon
+    color: white
+    font-size: 100px
+
+
+
 

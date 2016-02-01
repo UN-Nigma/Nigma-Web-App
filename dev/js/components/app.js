@@ -5,7 +5,7 @@ const UserStore = require('../stores/user');
 const UserActions = require('../actions/user');
 const {RouteHandler} = Router;
 const injectTapEventPlugin = require("react-tap-event-plugin");
-
+var Loader = require('./util/Loader');
 const Nigma = React.createClass({
 
   mixins: [Router.Navigation, Router.State],
@@ -44,6 +44,7 @@ const Nigma = React.createClass({
     return (
       <div className="Nigma">
         <RouteHandler />
+        <Loader />
       </div>
     )
   }
