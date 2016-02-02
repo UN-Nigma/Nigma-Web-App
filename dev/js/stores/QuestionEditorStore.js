@@ -73,7 +73,7 @@ var QuestionEditorStore = Reflux.createStore({
 			},
 			questionId: this.currentQuestion._id
 		};
-		LoaderActions.showLoader("Validando respuestas");
+		LoaderActions.showLoader("Validando variables");
 		QuestionAPI.validateVariables(data).then(function(res) {
 			var output = res.body;
 			alert("Variables validadas exitosamente");
@@ -87,6 +87,27 @@ var QuestionEditorStore = Reflux.createStore({
 
 
 	//Answers
+	validateAnswer(answer) {
+		var self = this;
+		this.currentQuestion.answer = answer;
+		this.trigger(this.generateState());
+		LoaderActions.showLoader("Validando respuestas");
+		var data = {
+			answer: answer,
+			variables: {
+				text: self.currentQuestion.variables
+			},
+			questionId: self.currentQuestion._id
+		}
+		QuestionAPI.validateAnswers(data).then(function(res) {
+			console.log(res);
+			alert("Respuestas validadas")
+			LoaderActions.hideLoader();
+		}).catch(function(exception) {
+			LoaderActions.hideLoader();
+
+		});
+	},
 	updateAnswer(answer) {
 		this.currentQuestion.answer = answer;
 		console.log("Autoupdate on loss focus")
@@ -116,12 +137,31 @@ var QuestionEditorStore = Reflux.createStore({
 		answer.correctValues.push(correctValue);
 		this.trigger(this.generateState());
 	},
+
 	deleteCorrectValue(index) {
 		var answer = this.currentQuestion.answer;
-		answer.correctValue.splice(index, 1);
+		answer.correctValues.splice(index, 1);
 		this.trigger(this.generateState());
 	},
 
+	createCommonError() {
+		var answer = this.currentQuestion.answer;
+		if(answer.commonErrors == undefined || answer.commonErrors == null)
+			answer.commonErrors = []
+		var commonError = {
+			message: "",
+			values: {}
+		};
+		answer.names.forEach((varName) => commonError.values[varName] = "");
+		answer.commonErrors.push(commonError);
+		this.trigger(this.generateState());
+	},
+
+	deleteCommonError(index) {
+		var answer = this.currentQuestion.answer;
+		answer.commonErrors.splice(index, 1);
+		this.trigger(this.generateState());
+	},
 	//Helpers
 
 	getCurrentVariableNames(code) {

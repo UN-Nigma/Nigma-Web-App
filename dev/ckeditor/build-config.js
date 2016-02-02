@@ -1,5 +1,5 @@
 ﻿/**
- * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 
@@ -13,10 +13,10 @@
  * (1) http://ckeditor.com/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) http://ckeditor.com/builder/e4b686e40bdca64377b7218b5e819cdb
+ * (2) http://ckeditor.com/builder/7a657085c7e0a5d72bec17f06b933850
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) http://ckeditor.com/builder/download/e4b686e40bdca64377b7218b5e819cdb
+ * (3) http://ckeditor.com/builder/download/7a657085c7e0a5d72bec17f06b933850
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -25,7 +25,7 @@
  */
 
 var CKBUILDER_CONFIG = {
-	skin: 'minimalist',
+	skin: 'office2013',
 	preset: 'standard',
 	ignore: [
 		'.bender',
@@ -59,19 +59,17 @@ var CKBUILDER_CONFIG = {
 		'elementspath' : 1,
 		'enterkey' : 1,
 		'entities' : 1,
+		'eqneditor' : 1,
 		'filebrowser' : 1,
 		'floatingspace' : 1,
 		'format' : 1,
-		'googledocs' : 1,
 		'horizontalrule' : 1,
 		'htmlwriter' : 1,
 		'image' : 1,
 		'indentlist' : 1,
-		'lightbox' : 1,
 		'link' : 1,
 		'list' : 1,
 		'magicline' : 1,
-		'mathjax' : 1,
 		'maximize' : 1,
 		'pastefromword' : 1,
 		'pastetext' : 1,
@@ -85,13 +83,15 @@ var CKBUILDER_CONFIG = {
 		'tab' : 1,
 		'table' : 1,
 		'tabletools' : 1,
-		'texzilla' : 1,
 		'toolbar' : 1,
 		'undo' : 1,
+		'uploadimage' : 1,
 		'wsc' : 1,
 		'wysiwygarea' : 1
 	},
 	languages : {
-		'en' : 1
+		'en' : 1,
+		'es' : 1,
+		'pt-br' : 1
 	}
 };

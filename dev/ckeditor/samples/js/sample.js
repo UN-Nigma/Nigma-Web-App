@@ -1,51 +1,21 @@
-
-function captureText() {
-	var TeXNode = document.getElementById("cke_80_textarea");
-	console.log(TeXNode);
-}
-
-function onOpen() {
-	changeTeX("algo");
-}
-
-function changeTeX(TeX) {
-	setTimeout(function(){
-
-		window.TeXNode = document.getElementById("cke_80_textarea");
-		console.log(TeXNode);
-		var lastVal = $("#cke_80_textarea").val();
-		$("#cke_80_textarea").val(lastVal + TeX);
-		var newVal = $("#cke_80_textarea").val();
-		console.log(newVal);
-
-	}, 400);
-
-}
-
-function openTeXDialog(e) {
-	console.log("wtf");
-	CKEDITOR.tools.callFunction(40,this);
-	changeTeX("test")
-}
+﻿/**
+ * Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
+ */
 
 /* exported initSample */
-CKEDITOR.config.mathJaxLib = '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML';
+
 if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
 	CKEDITOR.tools.enableHtml5Elements( document );
 
-CKEDITOR.config.height = 300;
+// The trick to keep the editor in the sample quite small
+// unless user specified own height.
+CKEDITOR.config.height = 150;
 CKEDITOR.config.width = 'auto';
 
 var initSample = ( function() {
 	var wysiwygareaAvailable = isWysiwygareaAvailable(),
 		isBBCodeBuiltIn = !!CKEDITOR.plugins.get( 'bbcode' );
-
-		setTimeout(function(){
-			window.TeXButton = document.getElementsByClassName("cke_button__mathjax");
-			window.TeXButton = window.TeXButton[0];
-			console.log(TeXButton);
-			captureText();
-		}, 300)
 
 	return function() {
 		var editorElement = CKEDITOR.document.getById( 'editor' );
@@ -80,3 +50,4 @@ var initSample = ( function() {
 		return !!CKEDITOR.plugins.get( 'wysiwygarea' );
 	}
 } )();
+

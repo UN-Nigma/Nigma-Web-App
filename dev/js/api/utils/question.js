@@ -95,13 +95,7 @@ const QuestionAPI = {
   },
   validateAnswers(data){
     const route = this._routes.validateAnswers;
-    API.callAjaxRequest(route, data, (err, res) => {
-      if(err){
-        cb(true, null);
-      } else {
-        cb(!res.body.ok, res.body);
-      }
-    });
+    return API.callAjaxRequest(route, data);
   }
 }
 

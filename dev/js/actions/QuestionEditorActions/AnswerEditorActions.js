@@ -6,8 +6,14 @@ var AnswerEditorActions = Reflux.createActions([
 	"deleteAnswerName",
 	//-----------------
 	"updateAnswer",
+	"validateAnswer",
+	//-----------------
 	"createCorrectValue",
-	"deleteCorrectValue"
+	"deleteCorrectValue",
+	//-------------------
+	"createCommonError",
+	"deleteCommonError",
+
 ]);
 
 module.exports = AnswerEditorActions;

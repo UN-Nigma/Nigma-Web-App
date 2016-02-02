@@ -167,7 +167,7 @@
                 cursor: pointer
                 color: #4285F4
 
-      .correct-values
+      .correct-values, .common-errors
         position: relative
         width: 100%
         overflow: hidden
@@ -175,7 +175,7 @@
           position: relative
           width: 100%
           padding: 10px
-          .correct-value
+          .correct-value, .common-error-value
             border: 1px solid #e5e5e5
             border-radius: 4px
             margin-top: 10px
@@ -202,7 +202,17 @@
               @include media($mobile)
                 @include span-columns(12)
                 @include omega
-
+              &.form-control.message
+                display: block
+                width: 100%
+                @include span-columns(12)
+                &:before
+                  display: block
+                  position: relative
+                  width: 100%
+                  height: 2px
+                  background-color: #e5e5e5
+                  content: ""
   
 
 

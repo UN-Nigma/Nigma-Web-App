@@ -59,6 +59,11 @@ var CompletingAnswers = React.createClass({
 	updateAnswer() {
 		AnswerEditorActions.updateAnswer(this.state.storeData.currentQuestion.answer)
 	},
+
+	onValidate() {
+		AnswerEditorActions.validateAnswer(this.state.storeData.currentQuestion.answer)
+	},
+
 	render() {
 		var self = this;
 		var question = this.state.storeData.currentQuestion;
@@ -86,6 +91,16 @@ var CompletingAnswers = React.createClass({
 				<CompletingAnswers.VariableNames answer={answer} />
 				{answer.names.length > 0 ? <CompletingAnswers.CorrectValues answer={answer} handleChange={this._changeAnswer} /> : null}
 				{answer.names.length > 0 ? <CompletingAnswers.CommonErrors answer={answer} handleChange={this._changeAnswer} /> : null}
+				<div className="a-button-container">
+					<section className="actions">
+						<button className="confirm-button" onClick={this.onValidate}>
+							<div className="flex">
+								<i className="material-icons icon">done</i>
+								<span className="text">Validar</span>
+							</div>
+						</button>
+					</section>
+				</div>
 			</article>
 		);
 	}
@@ -138,7 +153,6 @@ CompletingAnswers.VariableNames = React.createClass({
 		});
 	},
 	onAddVariable(evt) {
-		console.log(">>>>>>>>>", this.state)
 		if(this.state.currentIndex == -1)
 			AnswerEditorActions.createAnswerName(this.state.varName)
 		else
@@ -163,8 +177,8 @@ CompletingAnswers.VariableNames = React.createClass({
 					</section>
 					<section className="content">
 						<article className={`variable-name-form ${this.state.editing ? "s-editing" : ""}`}>
-							<label htmlFor="varname-field">Nombre de la variable: </label>
-							<input className="form-control" id="varname-field" onChange={this.onChangeField} placeholder={"Nombre de la variable"} value={this.state.varName}/>
+							<label htmlFor="varname-field">Nombre: </label>
+							<input className="form-control" id="varname-field" onChange={this.onChangeField} placeholder={"Nombre"} value={this.state.varName}/>
 							<div className="button-container">
 								<button className="buttom-submit" onClick={this.onAddVariable}>
 									<i className="material-icons icon">add</i>
@@ -227,28 +241,29 @@ CompletingAnswers.CorrectValues = React.createClass({
 });
 
 CompletingAnswers.CommonErrors = React.createClass({
-	addCorrectValue(evt) {
-		AnswerEditorActions.createCorrectValue();
+	addCommonError(evt) {
+		AnswerEditorActions.createCommonError();
 	},
-	deleteCorrectValue(index) {
-
+	deleteCommonError(index) {
+		AnswerEditorActions.deleteCommonError(index);
 	},
 	render() {
 		return (
-			<section className="correct-values">
+			<section className="common-errors">
 				<section className="s-title">
 					<i className="s-icon material-icons">assignment_late</i>
 					<span className="s-text">Errores comunes</span>
-					<i className="action-icon material-icons" onClick={this.addCorrectValue}>add</i>
+					<i className="action-icon material-icons" onClick={this.addCommonError}>add</i>
 				</section>
 				<section className="content">
 					{
 						this.props.answer.commonErrors.map((commonError, index) => (
-							<article className="correct-value" key={index}>
+							<article className="common-error-value" key={index}>
 								<div className="c-actions">
-									<i className="material-icons" onClick={this.deleteCorrectValue.bind(this, index)}>close</i>
+									<i className="material-icons" onClick={this.deleteCommonError.bind(this, index)}>close</i>
 								</div>
-								{this.props.answer.names.map((answerName, aIndex) => <input type="text" value={commonError[answerName]} className="form-control" data-type="text" onChange={this.props.handleChange} placeholder={answerName} key={aIndex} data-type="text" data-path={`commonErrors.${index}.${answerName}`}/>)}
+								{this.props.answer.names.map((answerName, aIndex) => <input type="text" value={commonError.values[answerName]} className="form-control" data-type="text" onChange={this.props.handleChange} placeholder={answerName} key={aIndex} data-type="text" data-path={`commonErrors.${index}.values.${answerName}`}/>)}
+								<input type="text" data-type="text" placeholder="Mensaje de retroalimentacion" data-path={`commonErrors.${index}.message`} value={commonError.message} className="form-control message" onChange={this.props.handleChange}/>
 							</article>
 						))
 
