@@ -63,6 +63,7 @@ var VariableEditor = React.createClass({
 	componentDidMount() {
 		this.editor = ace.edit("editor");
 		var editor = this.editor;
+		editor.$blockScrolling = Infinity
 		this.editorSession = editor.getSession();
 		editor.setShowPrintMargin(false);
 		editor.setValue(this.props.question.variables, 1);

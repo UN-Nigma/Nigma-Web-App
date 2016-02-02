@@ -7,7 +7,7 @@ var Collapsible = require('../../util/collapsible');
 /*  Question editor  components*/
 var VariableEditor = require('./VariableEditor');
 var AnswerEditor = require('./AnswerEditor');
-
+var FormulationEditor = require('./FormulationEditor');
 
 var QuestionEditor = React.createClass({
 	mixins: [Reflux.connect(QuestionEditorStore, 'storeData')],
@@ -27,11 +27,11 @@ var QuestionEditor = React.createClass({
 			content: (<VariableEditor question={currentQuestion} />)
 		})
 
-		// sections.push({
-		// 	title: "Formulación",
-		// 	icon: "edit",
-		// 	content: (<div><h1>Formulación</h1></div>)
-		// })
+		sections.push({
+			title: "Formulación",
+			icon: "edit",
+			content: (<FormulationEditor question={currentQuestion}/>)
+		})
 		//Answer Editor is subcribed to updates from the store
 		sections.push({
 			title: "Respuestas",
@@ -58,7 +58,20 @@ var QuestionEditor = React.createClass({
 					<span className="text">{question.name}</span>
 				</section>
 				<nav className="navbar">
-
+					<div className="nav-actions">
+						<button className="nav-button">
+							<i className="material-icons icon">done</i>
+							<span clasName="text">Exportar</span>
+						</button>
+						<button className="nav-button">
+							<i className="material-icons icon">search</i>
+							<span clasName="text">Previsualizar</span>
+						</button>
+						<button className="nav-button">
+							<i className="material-icons icon">save</i>
+							<span clasName="text">Guardar</span>
+						</button>
+					</div>
 				</nav>
 				<section className="question-content">
 					<Collapsible sections={this.getSections()} />

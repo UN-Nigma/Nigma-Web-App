@@ -2,12 +2,13 @@ const Reflux = require('reflux');
 const QuestionEditorActions = require('../actions/QuestionEditorActions');
 const VariableEditorActions = require('../actions/QuestionEditorActions/VariableEditorActions');
 const AnswerEditorActions = require('../actions/QuestionEditorActions/AnswerEditorActions');
+const FormulationEditorActions = require('../actions/QuestionEditorActions/FormulationEditorActions');
 const QuestionAPI = require('../api/utils/question');
 const LoaderActions = require('../components/util/actions/LoaderActions');
 
 
 var QuestionEditorStore = Reflux.createStore({
-	listenables: [QuestionEditorActions, VariableEditorActions, AnswerEditorActions],
+	listenables: [QuestionEditorActions, VariableEditorActions, AnswerEditorActions, FormulationEditorActions],
 	currentQuestion: null,
 	init() {},
 	getInitialState() {
@@ -84,7 +85,12 @@ var QuestionEditorStore = Reflux.createStore({
 		});
 	},
 
-
+	//Formulation
+	saveFormulationData(data) {
+		var self = this;
+		self.currentQuestion.formulation = data;
+		self.trigger(self.generateState());
+	},
 
 	//Answers
 	validateAnswer(answer) {
