@@ -23,7 +23,7 @@ var QuestionEditor = React.createClass({
 		var currentQuestion = this.state.storeData.currentQuestion;
 		sections.push({
 			title: "Variables",
-			icon: "help",
+			icon: "functions",
 			content: (<VariableEditor question={currentQuestion} />)
 		})
 
@@ -32,11 +32,11 @@ var QuestionEditor = React.createClass({
 		// 	icon: "edit",
 		// 	content: (<div><h1>Formulación</h1></div>)
 		// })
-
+		//Answer Editor is subcribed to updates from the store
 		sections.push({
 			title: "Respuestas",
 			icon: "done",
-			content: (<AnswerEditor question={currentQuestion} />)
+			content: (<AnswerEditor question={currentQuestion}/>)
 		})
 
 		// sections.push({

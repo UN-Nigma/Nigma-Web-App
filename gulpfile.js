@@ -7,15 +7,15 @@ var gulp       = require("gulp"),
     sass     = require("gulp-sass"),
     sourcemaps     = require("gulp-sourcemaps"),
     uglify     = require("gulp-uglify"),
-    webserver  = require("gulp-webserver"),
     stripdebug = require("gulp-strip-debug"),
     htmlmin    = require("gulp-htmlmin"),
     gutil      = require("gulp-util"),
+    browserSync = require('browser-sync').create(),
     rename     = require("gulp-rename");
 
 
 function bundleScripts(watch){
-  var bundler = browserify('./dev/js/main.js',{
+  var bundler = browserify('./dev/js/app.js',{
     debug: true,
     cache: {},
     packageCache: {},
@@ -43,11 +43,12 @@ function bundleScripts(watch){
     });
     stream.pipe(source('main.js'))
     .pipe(rename('bundle.js')) // so it won't open by mistake when looking for main.js using cmd-T
-    .pipe(gulp.dest('dist/js'));
+    .pipe(gulp.dest('dist/js'))
+    .pipe(browserSync.reload({stream: true}));
   }
 
   //bundler.on('update',rebundle);
-  return rebundle();
+  rebundle();
 };
 
 /**
@@ -56,7 +57,7 @@ function bundleScripts(watch){
  * Run Browserify
  */
 gulp.task('browserify',function(){
-  return bundleScripts(true);
+  bundleScripts(true);
 });
 
 
@@ -67,11 +68,12 @@ gulp.task('browserify',function(){
  */
 
 gulp.task('sass', function() {
-  return gulp.src('dev/style/main.sass')
+  gulp.src('dev/style/main.sass')
   	.pipe(sourcemaps.init())
-    .pipe(sass({includePaths: ['bower_components/bourbon/app/assets/stylesheets', 'bower_components/neat/app/assets/stylesheets']}))
+    .pipe(sass({errLogToConsole: true, includePaths: ['bower_components/bourbon/app/assets/stylesheets', 'bower_components/neat/app/assets/stylesheets']}))
   	.pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('dist/css'))
+    .pipe(browserSync.stream({match: '**/*.css'}));
 });
 
 /**
@@ -104,18 +106,6 @@ gulp.task('ckeditor', function() {
  * default port: 8000
  */
 
-gulp.task('server', function() {
-  gulp.src('dist')
-    .pipe(webserver({
-      livereload: true,
-      directoryListing: false,
-      open: false,
-      fallback : 'index.html',
-      port: 8000
-  }));
-});
-
-
 
 /**
  * HTML TASK
@@ -130,12 +120,13 @@ gulp.task('html', function(){
 		minifyURLs: true,
 		minifyJS: true
 		}))
-	.pipe(gulp.dest('dist'));
+	.pipe(gulp.dest('dist'))
+	.pipe(browserSync.reload({stream: true}));
 	});
 
 
 gulp.task('watch', function() {
-  bundleScripts(true);
+  //bundleScripts(true);
   gulp.watch('dev/js/**/*.js', ['browserify']);
   gulp.watch('dev/style/**/*.sass', ['sass']);
   gulp.watch('dev/js/libs/**/*.js', ['ckeditor']);
@@ -143,6 +134,17 @@ gulp.task('watch', function() {
   gulp.watch('dev/images/**.*', ['images']);
 })
 
+gulp.task('serve', ['build', 'watch'], function() {
+		var historyApiFallback = require('connect-history-api-fallback')
+
+    browserSync.init({
+        server: "./dist",
+        index: "index.html",
+        port: 8000,
+        middleware: [ historyApiFallback() ]
+    });
+});
+
 
 gulp.task('build', ['images', 'sass', 'ckeditor', 'html', 'browserify']);
-gulp.task('dev', ['build', 'server', 'watch']);
+gulp.task('dev', ['build', 'watch']);

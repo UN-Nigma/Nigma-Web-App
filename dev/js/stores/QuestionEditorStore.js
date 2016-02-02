@@ -1,12 +1,13 @@
 const Reflux = require('reflux');
 const QuestionEditorActions = require('../actions/QuestionEditorActions');
 const VariableEditorActions = require('../actions/QuestionEditorActions/VariableEditorActions');
+const AnswerEditorActions = require('../actions/QuestionEditorActions/AnswerEditorActions');
 const QuestionAPI = require('../api/utils/question');
 const LoaderActions = require('../components/util/actions/LoaderActions');
 
 
 var QuestionEditorStore = Reflux.createStore({
-	listenables: [QuestionEditorActions, VariableEditorActions],
+	listenables: [QuestionEditorActions, VariableEditorActions, AnswerEditorActions],
 	currentQuestion: null,
 	init() {},
 	getInitialState() {
@@ -18,8 +19,6 @@ var QuestionEditorStore = Reflux.createStore({
 		LoaderActions.showLoader("Cargando pregunta, espere por favor");
 		QuestionAPI.loadQuestion({questionId: questionId}).then(function(res) {
 			var question = res.question;
-			question.answer = question.answer || {};
-			question.metadata = question.metadata || {};
 			console.log(question);
 			self.currentQuestion = question;
 			self.trigger(self.generateState());
@@ -85,6 +84,43 @@ var QuestionEditorStore = Reflux.createStore({
 		});
 	},
 
+
+
+	//Answers
+	updateAnswer(answer) {
+		this.currentQuestion.answer = answer;
+		console.log("Autoupdate on loss focus")
+		this.trigger(this.generateState());
+	},
+	createAnswerName(name) {
+		this.currentQuestion.answer.names.push(name);
+		this.trigger(this.generateState());
+	},
+
+	editAnswerName(index, name){
+		this.currentQuestion.answer.names[index] = name;
+		this.trigger(this.generateState());
+	},
+
+	deleteAnswerName(index) {
+		this.currentQuestion.answer.names.splice(index, 1);
+		this.trigger(this.generateState());
+	},
+
+	createCorrectValue() {
+		var answer = this.currentQuestion.answer;
+		if(answer.correctValues == undefined || answer.correctValues == null)
+			answer.correctValues = []
+		var correctValue = {};
+		answer.names.forEach((varName) => correctValue[varName] = "");
+		answer.correctValues.push(correctValue);
+		this.trigger(this.generateState());
+	},
+	deleteCorrectValue(index) {
+		var answer = this.currentQuestion.answer;
+		answer.correctValue.splice(index, 1);
+		this.trigger(this.generateState());
+	},
 
 	//Helpers
 

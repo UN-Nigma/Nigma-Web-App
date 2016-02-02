@@ -1,11 +1,12 @@
 var React = require('react');
 var QuestionExplorerActions = require('../../../actions/questionExplorerActions');
-import {Navigation} from 'react-router';
 
 var NavigatorPath = React.createClass({
-	mixins: [Navigation],
+	contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
 	changeFolder() {
-		this.transitionTo(`/space/u/folder/${this.props.folder._id}`);
+		this.context.router.push(`/space/u/folder/${this.props.folder._id}`);
 	},
 
 	render() {

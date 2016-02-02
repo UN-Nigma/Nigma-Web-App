@@ -2,9 +2,10 @@ var React = require('react');
 var moment = require('moment');
 
 const QuestionExplorerActions = require('../../../actions/questionExplorerActions');
-import {Navigation} from 'react-router';
 var Row = React.createClass({
-	mixins: [Navigation],
+	contextTypes: {
+		router: React.PropTypes.object.isRequired
+	},
 	getInitialState: function() {
 		return {
 			selected: false
@@ -18,12 +19,12 @@ var Row = React.createClass({
 
 	changeFolder(evt) {
 		//QuestionExplorerActions.changeFolder(this.props.item._id)
-		this.transitionTo(`/space/u/folder/${this.props.item._id}`);
+		this.context.router.push(`/space/u/folder/${this.props.item._id}`);
 
 	},
 
 	openQuestion(evt) {
-		this.transitionTo(`/space/u/question/${this.props.item._id}`);
+		this.context.router.push(`/space/u/question/${this.props.item._id}`);
 	},
 
 	selectRow(evt) {
