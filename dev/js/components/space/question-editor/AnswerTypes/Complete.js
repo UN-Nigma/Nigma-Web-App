@@ -56,10 +56,6 @@ var CompletingAnswers = React.createClass({
 		answerHelper._changeAnswer(evt, this);
 	},
 
-	updateAnswer() {
-		AnswerEditorActions.updateAnswer(this.state.storeData.currentQuestion.answer)
-	},
-
 	onValidate() {
 		AnswerEditorActions.validateAnswer(this.state.storeData.currentQuestion.answer)
 	},
@@ -69,7 +65,7 @@ var CompletingAnswers = React.createClass({
 		var question = this.state.storeData.currentQuestion;
 		var answer = question.answer;
 		return (
-			<article className="AnswerEditor-Complete" onBlur={this.updateAnswer}>
+			<article className="AnswerEditor-Complete">
 				<section className="general-options">
 					<section className="s-title">
 						<i className="s-icon material-icons">settings</i>
@@ -227,7 +223,24 @@ CompletingAnswers.CorrectValues = React.createClass({
 								<div className="c-actions">
 									<i className="material-icons" onClick={this.deleteCorrectValue.bind(this, index)}>close</i>
 								</div>
-								{this.props.answer.names.map((answerName, aIndex) => <input type="text" value={correctValue[answerName]} className="form-control" data-type="text" onChange={this.props.handleChange} placeholder={answerName} key={aIndex} data-type="text" data-path={`correctValues.${index}.${answerName}`}/>)}
+								<div className="form">
+									{this.props.answer.names.map((answerName, aIndex) => (
+										<div className="group" key={aIndex}>
+											<label htmlFor={`correctValues.${index}.${answerName}`}>{answerName}</label>
+											<input type="text"
+												value={correctValue[answerName]}
+												className="form-control"
+												data-type="text"
+												id={`correctValues.${index}.${answerName}`}
+												onChange={this.props.handleChange}
+												placeholder={answerName}
+												data-type="text"
+												data-path={`correctValues.${index}.${answerName}`}
+										/>
+
+								</div>
+								))}
+								</div>
 							</article>
 						))
 
@@ -262,8 +275,29 @@ CompletingAnswers.CommonErrors = React.createClass({
 								<div className="c-actions">
 									<i className="material-icons" onClick={this.deleteCommonError.bind(this, index)}>close</i>
 								</div>
-								{this.props.answer.names.map((answerName, aIndex) => <input type="text" value={commonError.values[answerName]} className="form-control" data-type="text" onChange={this.props.handleChange} placeholder={answerName} key={aIndex} data-type="text" data-path={`commonErrors.${index}.values.${answerName}`}/>)}
-								<input type="text" data-type="text" placeholder="Mensaje de retroalimentacion" data-path={`commonErrors.${index}.message`} value={commonError.message} className="form-control message" onChange={this.props.handleChange}/>
+								<div className="form">
+									{this.props.answer.names.map((answerName, aIndex) => (
+										<div className="group" key={aIndex}>
+											<label htmlFor={`commonErrors.${index}.values.${answerName}`}>{answerName}</label>
+											<input
+												type="text"
+												value={commonError.values[answerName]}
+												className="form-control"
+												data-type="text"
+												id={`commonErrors.${index}.values.${answerName}`}
+												onChange={this.props.handleChange}
+												placeholder={answerName}
+												data-type="text"
+												data-path={`commonErrors.${index}.values.${answerName}`}/>
+										</div>
+										)
+									)}
+								</div>
+								<div className="group-message">
+									<label className="label-message">Mensaje de retroalimentacion</label>
+									<input type="text" data-type="text" placeholder="Mensaje de retroalimentacion" data-path={`commonErrors.${index}.message`} value={commonError.message} className="form-control message" onChange={this.props.handleChange}/>
+								</div>
+
 							</article>
 						))
 

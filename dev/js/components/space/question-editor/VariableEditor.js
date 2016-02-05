@@ -5,15 +5,15 @@ var VariableEditorActions = require('../../../actions/QuestionEditorActions/Vari
 
 //UTIl
 var Dropdown = require('../../util/dropdown');
-
+var AceEditorController = require('../../../utils/AceEditor');
 
 var VariableEditor = React.createClass({
 	onCreateType(type) {
-		var currentCode = this.editor.getValue();
+		var currentCode = AceEditorController.getValue();
 		VariableEditorActions.createVariable(currentCode, type);
 	},
 	onValidate(evt) {
-		var currentCode = this.editor.getValue();
+		var currentCode = AceEditorController.getValue();
 		VariableEditorActions.validateVariables(currentCode)
 	},
 	creatorOptions() {
@@ -45,7 +45,7 @@ var VariableEditor = React.createClass({
 					<Dropdown {...this.creatorOptions()}/>
 				</section>
 				<section className="editor">
-					<div id="editor">
+					<div id="ace-editor">
 						{""}
 					</div>
 				</section>
@@ -61,15 +61,11 @@ var VariableEditor = React.createClass({
 		);
 	},
 	componentDidMount() {
-		this.editor = ace.edit("editor");
-		var editor = this.editor;
-		editor.$blockScrolling = Infinity
-		this.editorSession = editor.getSession();
-		editor.setShowPrintMargin(false);
+		var editor = AceEditorController.createInstance('ace-editor')
 		editor.setValue(this.props.question.variables, 1);
 	},
 	componentDidUpdate(prevProps, prevState) {
-		var editor = this.editor;
+		var editor = AceEditorController.getInstance();
 		editor.setValue(this.props.question.variables, 1);
 	},
 });

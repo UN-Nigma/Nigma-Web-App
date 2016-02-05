@@ -1,7 +1,7 @@
 var Reflux = require('reflux');
 var LoaderActions = require('../actions/LoaderActions');
 
-var ClientStore = Reflux.createStore({
+var LoaderActions = Reflux.createStore({
 		listenables: [LoaderActions],
 		showing: false,
 		loaderType: 'simple',
@@ -28,7 +28,8 @@ var ClientStore = Reflux.createStore({
 		hideLoader() {
 			this.showing = false;
 			this.message = "";
-			this.trigger(this.generateState());
+			var self = this;
+			self.trigger(self.generateState());
 		},
 
 		increaseTime(step = 1000){
@@ -54,4 +55,4 @@ var ClientStore = Reflux.createStore({
 
 });
 
-module.exports = ClientStore;
+module.exports = LoaderActions;

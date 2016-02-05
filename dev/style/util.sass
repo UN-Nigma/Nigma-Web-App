@@ -1,3 +1,7 @@
+*
+  outline: none
+  &:focus
+    outline: none
 .spin
   animation: spin 2s infinite linear
 
@@ -96,7 +100,7 @@
         .text
           font-weight: 400
       .collapsible-content
-        max-height: 1000px
+        max-height: 2000px
         @include transition-property(max-height)
         @include transition-duration(0.5s)
         @include transition-timing-function(ease-in)
@@ -192,6 +196,40 @@
   .icon
     color: white
     font-size: 100px
+
+
+.notification
+  position: fixed
+  bottom: 50px
+  right: -260px
+  @include transition(right 1s)
+  border-radius: 4px
+  max-width: 250px
+  max-height: 200px
+  padding: 10px
+  padding-top: 5px
+  color: white
+  overflow-y: scroll
+  z-index: 30
+  -webkit-box-shadow: 4px 3px 5px 1px rgba(0,0,0,0.75);
+  -moz-box-shadow: 4px 3px 5px 1px rgba(0,0,0,0.75);
+  box-shadow: 4px 3px 5px 1px rgba(0,0,0,0.75);
+  .icon
+    display: block
+    float: right
+    font-size: 16px
+    cursor: pointer
+  .message
+    display: block
+  &.alert
+    background-color: #C9302C
+  &.warning
+    background-color: #EC971F
+  &.success
+    background-color: #449D44
+  
+  &.n-show
+    right: 30px
 
 
 

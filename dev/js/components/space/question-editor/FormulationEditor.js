@@ -16,12 +16,6 @@ var FormulationEditor = React.createClass({
 	componentDidMount() {
 		this.editor = CkeditorController.createInstance('ck-editor');
 		CkeditorController.setValue(this.props.question.formulation);
-		// this.saveInterval = setInterval(() => {
-		// 	this.saveData(CkeditorController.getValue());
-		// }, 10000);
-		CkeditorController.setOnBlur(() => {
-			this.saveData(CkeditorController.getValue());
-		})
 	},
 	componentDidUpdate(prevProps, prevState) {
 		CkeditorController.setValue(this.props.question.formulation);

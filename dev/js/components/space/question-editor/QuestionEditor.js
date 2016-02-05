@@ -18,6 +18,16 @@ var QuestionEditor = React.createClass({
 		}
 	},
 
+	exportQuestion() {
+
+	},
+	saveQuestion() {
+		QuestionEditorActions.saveQuestion();
+	},
+	previewQuestion() {
+		QuestionEditorActions.previewQuestion();
+	},
+
 	getSections() {
 		var sections = [];
 		var currentQuestion = this.state.storeData.currentQuestion;
@@ -39,11 +49,11 @@ var QuestionEditor = React.createClass({
 			content: (<AnswerEditor question={currentQuestion}/>)
 		})
 
-		// sections.push({
-		// 	title: "Metadatos",
-		// 	icon: "person",
-		// 	content: (<div><h1>Metadatos</h1></div>)
-		// })
+		sections.push({
+			title: "Metadatos",
+			icon: "person",
+			content: (<div><h1>Metadatos</h1></div>)
+		})
 
 		return sections;
 	},
@@ -61,15 +71,15 @@ var QuestionEditor = React.createClass({
 					<div className="nav-actions">
 						<button className="nav-button">
 							<i className="material-icons icon">done</i>
-							<span clasName="text">Exportar</span>
+							<span className="text">Exportar</span>
 						</button>
-						<button className="nav-button">
+						<button className="nav-button" onClick={this.previewQuestion}>
 							<i className="material-icons icon">search</i>
-							<span clasName="text">Previsualizar</span>
+							<span className="text" >Previsualizar</span>
 						</button>
-						<button className="nav-button">
+						<button className="nav-button" onClick={this.saveQuestion}>
 							<i className="material-icons icon">save</i>
-							<span clasName="text">Guardar</span>
+							<span className="text">Guardar</span>
 						</button>
 					</div>
 				</nav>

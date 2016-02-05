@@ -1,7 +1,10 @@
 var Reflux = require('reflux');
 
 var QuestionEditorActions = Reflux.createActions([
-	"loadQuestion"
+	"loadQuestion",
+	"saveQuestion",
+	"exportQuestion",
+	"previewQuestion"
 ]);
 
 

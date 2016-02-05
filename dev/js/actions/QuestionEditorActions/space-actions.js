@@ -7,22 +7,6 @@ const API = require('../../api/API');
 
 var SpaceActions = {
 
-  previewQuestion(questionid, data) {
-    SpaceApi.preview({
-      question: data,
-      questionid: questionid
-    }, (err, res) => {
-      if (res) {
-        if(res.ok) {
-          window.open(res.url);
-        } else {
-          console.error("There was an error trying to preview question ");
-        }
-        console.error("There was an error trying to preview question ");
-      }
-    });
-  },
-
   updateQuestionData(data, questionId) {
     var payload = {
       question: data,

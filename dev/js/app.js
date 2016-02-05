@@ -12,6 +12,7 @@ var QuestionEditor = require('./components/space/question-editor/QuestionEditor'
 
 
 var Loader = require('./components/util/Loader');
+var Notification = require('./components/util/notification');
 
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 const Nigma = React.createClass({
@@ -54,6 +55,7 @@ const Nigma = React.createClass({
         	{this.props.children}
         </div>
         <Loader />
+        <Notification />
       </div>
     )
   }

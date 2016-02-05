@@ -9,6 +9,9 @@ var CkeditorController = {
 		this.focusManager = focusManager;
 		return this.currentInstance;
 	},
+	getInstance() {
+		return this.currentInstance;
+	},
 	getValue() {
 		return this.currentInstance.getData();
 	},
@@ -16,7 +19,7 @@ var CkeditorController = {
 		this.currentInstance.setData(value);
 	},
 	hasFocus() {
-		return focusManager.hasFocus;
+		return this.focusManager.hasFocus;
 	},
 	setOnBlur(cb) {
 		this.currentInstance.on('blur', cb);

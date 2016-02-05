@@ -38,6 +38,10 @@ const QuestionAPI = {
     validateAnswers: {
       route: "/questions/:questionId/answers/validate",
       method: API._REQUEST_METHOD.put
+    },
+    preview: {
+      route: "/questions/:questionid/scorms/preview",
+      method: API._REQUEST_METHOD.put
     }
   },
   createQuestion(data){
@@ -48,16 +52,14 @@ const QuestionAPI = {
     const route = this._routes.get;
     return API.callAjaxRequest(route, data);
   },
-  updateQuestionData(data, cb){
+  updateQuestionData(data){
     const route = this._routes.updateQuestionData;
-    API.callAjaxRequest(route, data, (err, res) => {
-      console.log("Respuesta", res);
-      if(err){
-        cb(err, null);
-      } else {
-        cb(!res.body.ok);
-      }
-    });
+    return API.callAjaxRequest(route, data);
+  },
+
+  preview(data){
+    const route = this._routes.preview;
+    return API.callAjaxRequest(route, data);
   },
 
   exportQuestionData(data, cb){

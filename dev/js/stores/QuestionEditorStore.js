@@ -5,7 +5,9 @@ const AnswerEditorActions = require('../actions/QuestionEditorActions/AnswerEdit
 const FormulationEditorActions = require('../actions/QuestionEditorActions/FormulationEditorActions');
 const QuestionAPI = require('../api/utils/question');
 const LoaderActions = require('../components/util/actions/LoaderActions');
-
+const NotificationActions = require('../components/util/actions/NotificationActions');
+var CkeditorController = require('../utils/ckeditor');
+var AceEditorController = require('../utils/AceEditor');
 
 var QuestionEditorStore = Reflux.createStore({
 	listenables: [QuestionEditorActions, VariableEditorActions, AnswerEditorActions, FormulationEditorActions],
@@ -16,6 +18,7 @@ var QuestionEditorStore = Reflux.createStore({
 	},
 
 	loadQuestion(questionId) {
+		this.getValueComponents();
 		var self = this;
 		LoaderActions.showLoader("Cargando pregunta, espere por favor");
 		QuestionAPI.loadQuestion({questionId: questionId}).then(function(res) {
@@ -30,12 +33,63 @@ var QuestionEditorStore = Reflux.createStore({
 		});
 	},
 
+	saveQuestion() {
+		this.getValueComponents();
+		var self = this;
+		var data = {
+			questionid: self.currentQuestion._id,
+			question: self.currentQuestion
+		}
+		LoaderActions.showLoader("Guardando pregunta, espere por favor");
+		QuestionAPI.updateQuestionData(data).then(function(res) {
+			LoaderActions.hideLoader();
+			var ok = res.ok;
+			if(ok) {
+				alert("Pregunta guardada con exíto")
+			} else {
+				alert("Ocurrió un error al guardar la pregunta")
+			}
+		}).catch(function(error) {
+			LoaderActions.hideLoader();
+			console.error(error);
+		})
+	},
+
+
+
+	previewQuestion() {
+		this.getValueComponents();
+		var self = this;
+		var data = {
+			questionid: self.currentQuestion._id,
+			question: self.currentQuestion
+		}
+		LoaderActions.showLoader("Espere por favor");
+		QuestionAPI.preview(data).then(function(res) {
+			LoaderActions.hideLoader();
+			var ok = res.ok;
+			if(ok) {
+				window.open(res.url);
+			} else {
+				console.error("There was an error trying to preview question ");
+			}
+		}).catch(function(error) {
+			LoaderActions.hideLoader();
+			console.error(error);
+		})
+	},
+
+	exportQuestion() {
+
+	},
+
 	/*
 		Variable Actions listeners
 		-----------------------------------------------------
 	*/
 
 	createVariable(currentCode, type) {
+		this.getValueComponents();
 		var self = this;
 		var varNames  = self.getCurrentVariableNames(currentCode);
 		var newVariableName  = null;
@@ -67,6 +121,7 @@ var QuestionEditorStore = Reflux.createStore({
 	},
 
 	validateVariables(currentCode) {
+		this.getValueComponents();
 		var self = this;
 		var data = {
 			variables: {
@@ -87,6 +142,7 @@ var QuestionEditorStore = Reflux.createStore({
 
 	//Formulation
 	saveFormulationData(data) {
+		this.getValueComponents();
 		var self = this;
 		self.currentQuestion.formulation = data;
 		self.trigger(self.generateState());
@@ -94,8 +150,27 @@ var QuestionEditorStore = Reflux.createStore({
 
 	//Answers
 	validateAnswer(answer) {
+		this.getValueComponents();
 		var self = this;
 		this.currentQuestion.answer = answer;
+		for(var i = 0; i < answer.correctValues.length; i++) {
+			var correctValue = answer.correctValues[i];
+			for(var key in correctValue) {
+				if(answer.names.indexOf(key) == -1) {
+					delete correctValue[key];
+				}
+			}
+		}
+
+		for(var i = 0; i < answer.commonErrors.length; i++) {
+			var commonError = answer.commonErrors[i].values;
+			for(var key in commonError) {
+				if(answer.names.indexOf(key) == -1) {
+					delete commonError[key];
+				}
+			}
+		}
+
 		this.trigger(this.generateState());
 		LoaderActions.showLoader("Validando respuestas");
 		var data = {
@@ -107,34 +182,43 @@ var QuestionEditorStore = Reflux.createStore({
 		}
 		QuestionAPI.validateAnswers(data).then(function(res) {
 			console.log(res);
-			alert("Respuestas validadas")
+			if(res.ok)
+				NotificationActions.showNotification("Respuestas validadas correctamente");
+			else
+				NotificationActions.showNotification("Hay errores en la validación: \n" + res.errors.join("\n"), "warning");
 			LoaderActions.hideLoader();
 		}).catch(function(exception) {
 			LoaderActions.hideLoader();
-
+			NotificationActions.showNotification("Ocurrió un error al intentar validar las respuestas", "alert");
 		});
 	},
 	updateAnswer(answer) {
+		this.getValueComponents();
+		var self = this;
 		this.currentQuestion.answer = answer;
 		console.log("Autoupdate on loss focus")
 		this.trigger(this.generateState());
 	},
 	createAnswerName(name) {
+		this.getValueComponents();
 		this.currentQuestion.answer.names.push(name);
 		this.trigger(this.generateState());
 	},
 
 	editAnswerName(index, name){
+		this.getValueComponents();
 		this.currentQuestion.answer.names[index] = name;
 		this.trigger(this.generateState());
 	},
 
 	deleteAnswerName(index) {
+		this.getValueComponents();
 		this.currentQuestion.answer.names.splice(index, 1);
 		this.trigger(this.generateState());
 	},
 
 	createCorrectValue() {
+		this.getValueComponents();
 		var answer = this.currentQuestion.answer;
 		if(answer.correctValues == undefined || answer.correctValues == null)
 			answer.correctValues = []
@@ -145,12 +229,14 @@ var QuestionEditorStore = Reflux.createStore({
 	},
 
 	deleteCorrectValue(index) {
+		this.getValueComponents();
 		var answer = this.currentQuestion.answer;
 		answer.correctValues.splice(index, 1);
 		this.trigger(this.generateState());
 	},
 
 	createCommonError() {
+		this.getValueComponents();
 		var answer = this.currentQuestion.answer;
 		if(answer.commonErrors == undefined || answer.commonErrors == null)
 			answer.commonErrors = []
@@ -164,6 +250,7 @@ var QuestionEditorStore = Reflux.createStore({
 	},
 
 	deleteCommonError(index) {
+		this.getValueComponents();
 		var answer = this.currentQuestion.answer;
 		answer.commonErrors.splice(index, 1);
 		this.trigger(this.generateState());
@@ -172,9 +259,16 @@ var QuestionEditorStore = Reflux.createStore({
 
 	getCurrentVariableNames(code) {
 		var res = code.split("\n").filter(variable => variable != '').map(variable => variable.substring(0,2));
-		return res;
+ 		return res;
 	},
-
+	getValueComponents() {
+		if(CkeditorController.getInstance() != null) {
+			this.currentQuestion.formulation = CkeditorController.getValue();
+		}
+		if(AceEditorController.getInstance() != null) {
+			this.currentQuestion.variables = AceEditorController.getValue();
+		}
+	},
 	generateState() {
 		var self = this;
 		return {
