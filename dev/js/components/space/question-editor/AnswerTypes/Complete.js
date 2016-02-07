@@ -2,8 +2,44 @@ var React = require('react');
 var Reflux = require('reflux');
 var AnswerEditorActions = require('../../../../actions/QuestionEditorActions/AnswerEditorActions');
 var QuestionEditorStore = require('../../../../stores/QuestionEditorStore');
+var Tooltip = require('../../../util/popover');
 
+var currentTooltip = null;
 var answerHelper = {
+	errorList: null,
+
+	generateTooltip(evt) {
+		evt.preventDefault();
+		evt.stopPropagation();
+		var target = evt.target;
+		var position = {left: evt.clientX, top: evt.clientY}
+		currentTooltip = <Tooltip show={true} message={target.getAttribute("data-error-message")} position={position}/>;
+		currentTooltip = React.render(currentTooltip, document.getElementById('tooltip'));
+	},
+	quitTooltip(evt) {
+		evt.preventDefault();
+		evt.stopPropagation();
+		if(currentTooltip != null) {
+			currentTooltip.hide();
+			setTimeout(function() {
+				React.unmountComponentAtNode(document.getElementById('tooltip'));
+				currentTooltip = null;
+			}, 400);
+		}
+	},
+	getErrorMessage(type, path) {
+		if(this.errorList != null) {
+			var error = this.errorList[type].filter(object => (object.route == path));
+			if(error.length > 0) {
+				return error[0].message;
+			} else {
+				return "";
+			}
+		} else {
+			return "";
+		}
+	},
+
 	_convertToNativeType(value, type) {
 	type = type || "string";
 		if(value == "" || value == null || value == undefined){
@@ -64,6 +100,7 @@ var CompletingAnswers = React.createClass({
 		var self = this;
 		var question = this.state.storeData.currentQuestion;
 		var answer = question.answer;
+		answerHelper.errorList = this.state.storeData.answerErrors || null;
 		return (
 			<article className="AnswerEditor-Complete">
 				<section className="general-options">
@@ -97,6 +134,7 @@ var CompletingAnswers = React.createClass({
 						</button>
 					</section>
 				</div>
+				<div id="tooltip"/>
 			</article>
 		);
 	}
@@ -224,22 +262,35 @@ CompletingAnswers.CorrectValues = React.createClass({
 									<i className="material-icons" onClick={this.deleteCorrectValue.bind(this, index)}>close</i>
 								</div>
 								<div className="form">
-									{this.props.answer.names.map((answerName, aIndex) => (
-										<div className="group" key={aIndex}>
-											<label htmlFor={`correctValues.${index}.${answerName}`}>{answerName}</label>
-											<input type="text"
-												value={correctValue[answerName]}
-												className="form-control"
-												data-type="text"
-												id={`correctValues.${index}.${answerName}`}
-												onChange={this.props.handleChange}
-												placeholder={answerName}
-												data-type="text"
-												data-path={`correctValues.${index}.${answerName}`}
-										/>
-
-								</div>
-								))}
+									{this.props.answer.names.map((answerName, aIndex) => {
+										var path = `correctValues.${index}.${answerName}`;
+										var errorClass = "";
+										var onMouseOver = () => {};
+										var onMouseOut = () => {};
+										var errorMessage = answerHelper.getErrorMessage("correctValues", path);
+										if(errorMessage != ""){
+											onMouseOver = answerHelper.generateTooltip;
+											onMouseOut = answerHelper.quitTooltip;
+											errorClass = " input-error";
+										}
+										return (
+											<div className="group" key={aIndex}>
+												<label htmlFor={`correctValues-${index}-${answerName}`}>{answerName}</label>
+												<input type="text"
+													value={correctValue[answerName]}
+													className={`form-control${errorClass}`}
+													data-type="text"
+													id={`correctValues-${index}-${answerName}`}
+													onChange={this.props.handleChange}
+													placeholder={answerName}
+													data-type="text"
+													data-error-message={errorMessage}
+													onMouseOver={onMouseOver}
+													onMouseOut={onMouseOut}
+													data-path={path}
+											/>
+										</div>);
+								})}
 								</div>
 							</article>
 						))
@@ -276,21 +327,34 @@ CompletingAnswers.CommonErrors = React.createClass({
 									<i className="material-icons" onClick={this.deleteCommonError.bind(this, index)}>close</i>
 								</div>
 								<div className="form">
-									{this.props.answer.names.map((answerName, aIndex) => (
-										<div className="group" key={aIndex}>
+									{this.props.answer.names.map((answerName, aIndex) => {
+										var path = `commonErrors.${index}.values.${answerName}`;
+										var errorClass = "";
+										var onMouseOver = () => {};
+										var onMouseOut = () => {};
+										var errorMessage = answerHelper.getErrorMessage("commonErrors", path);
+										if(errorMessage != ""){
+											onMouseOver = answerHelper.generateTooltip;
+											onMouseOut = answerHelper.quitTooltip;
+											errorClass = " input-error";
+										}
+										return (<div className="group" key={aIndex}>
 											<label htmlFor={`commonErrors.${index}.values.${answerName}`}>{answerName}</label>
 											<input
 												type="text"
 												value={commonError.values[answerName]}
-												className="form-control"
+												className={`form-control${errorClass}`}
 												data-type="text"
-												id={`commonErrors.${index}.values.${answerName}`}
+												id={path}
 												onChange={this.props.handleChange}
 												placeholder={answerName}
 												data-type="text"
-												data-path={`commonErrors.${index}.values.${answerName}`}/>
-										</div>
-										)
+												onMouseOut={onMouseOut}
+												onMouseOver={onMouseOver}
+												data-error-message={errorMessage}
+												data-path={path}/>
+										</div>);
+										}
 									)}
 								</div>
 								<div className="group-message">

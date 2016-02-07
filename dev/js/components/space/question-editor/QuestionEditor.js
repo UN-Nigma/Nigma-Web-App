@@ -84,7 +84,7 @@ var QuestionEditor = React.createClass({
 					</div>
 				</nav>
 				<section className="question-content">
-					<Collapsible sections={this.getSections()} />
+					<Collapsible sections={this.getSections()} open={[0,1,2,3]}/>
 				</section>
 			</section>
 		);

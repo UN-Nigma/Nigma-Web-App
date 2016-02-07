@@ -10,20 +10,11 @@ var notification = React.createClass({
 		var showingClass = storeData.isShowing ? "n-show" : "";
 		return (
 			<div className={`notification ${storeData.type} ${showingClass}`}>
-
 				<i className="icon material-icons" onClick={NotificationActions.hideNotification}>close</i>
 				<span className="message">{storeData.message}</span>
 			</div>
 		);
-	},
-
-	componentDidUpdate(prevProps, prevState) {
-		var storeData = this.state.storeData;
-		var prevStoreData = prevState.storeData;
-		if(!prevStoreData.isShowing && storeData.isShowing) {
-			setTimeout(NotificationActions.hideNotification, 6000);
-		}
-	},
+	}
 
 });
 

@@ -6,10 +6,12 @@ var NotificationStore = Reflux.createStore({
 		isShowing: false,
 		type: null,
 		defaultTypes: ["alert", "warning", "success"],
+		queue: [],
 		message: "",
 		init() {
 			this.showing = false;
 			this.message = "";
+			this.type = null;
 			this.type = null;
 		},
 		getInitialState() {

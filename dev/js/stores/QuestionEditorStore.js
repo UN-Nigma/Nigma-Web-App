@@ -153,24 +153,6 @@ var QuestionEditorStore = Reflux.createStore({
 		this.getValueComponents();
 		var self = this;
 		this.currentQuestion.answer = answer;
-		for(var i = 0; i < answer.correctValues.length; i++) {
-			var correctValue = answer.correctValues[i];
-			for(var key in correctValue) {
-				if(answer.names.indexOf(key) == -1) {
-					delete correctValue[key];
-				}
-			}
-		}
-
-		for(var i = 0; i < answer.commonErrors.length; i++) {
-			var commonError = answer.commonErrors[i].values;
-			for(var key in commonError) {
-				if(answer.names.indexOf(key) == -1) {
-					delete commonError[key];
-				}
-			}
-		}
-
 		this.trigger(this.generateState());
 		LoaderActions.showLoader("Validando respuestas");
 		var data = {
@@ -181,11 +163,18 @@ var QuestionEditorStore = Reflux.createStore({
 			questionId: self.currentQuestion._id
 		}
 		QuestionAPI.validateAnswers(data).then(function(res) {
-			console.log(res);
-			if(res.ok)
+			if(res.ok) {
 				NotificationActions.showNotification("Respuestas validadas correctamente");
-			else
-				NotificationActions.showNotification("Hay errores en la validación: \n" + res.errors.join("\n"), "warning");
+			}
+			else {
+				var message = "Hay errores en la validación, dirijase al formulario para corregir los errores";
+				NotificationActions.showNotification(message, "warning");
+				var state = self.generateState();
+				state.answerErrors = res.errors;
+				console.log("Updating", state);
+				self.trigger(state);
+
+			}
 			LoaderActions.hideLoader();
 		}).catch(function(exception) {
 			LoaderActions.hideLoader();
