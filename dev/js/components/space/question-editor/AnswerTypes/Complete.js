@@ -28,7 +28,7 @@ var answerHelper = {
 		}
 	},
 	getErrorMessage(type, path) {
-		if(this.errorList != null) {
+		if(this.errorList != null && (typeof this.errorsList) == "object") {
 			var error = this.errorList[type].filter(object => (object.route == path));
 			if(error.length > 0) {
 				return error[0].message;

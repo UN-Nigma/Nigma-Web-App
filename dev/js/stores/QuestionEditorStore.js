@@ -131,12 +131,17 @@ var QuestionEditorStore = Reflux.createStore({
 		};
 		LoaderActions.showLoader("Validando variables");
 		QuestionAPI.validateVariables(data).then(function(res) {
-			var output = res.body;
-			alert("Variables validadas exitosamente");
+			var output = res;
 			LoaderActions.hideLoader();
+			if(res.ok){
+				NotificationActions.showNotification("Variables validadas correctamente");
+			} else {
+				NotificationActions.showNotification(`Hay errores en las variables: \n* ${res.errors.join("\n* ")}`, "warning");
+			}
 		}).catch(function(error) {
+			console.error(error);
 			LoaderActions.hideLoader();
-			alert("Ocurrió un error al validar")
+			NotificationActions.showNotification("Ocurrió un error al intentar validar las variables", "alert");
 		});
 	},
 
@@ -168,15 +173,20 @@ var QuestionEditorStore = Reflux.createStore({
 			}
 			else {
 				var message = "Hay errores en la validación, dirijase al formulario para corregir los errores";
-				NotificationActions.showNotification(message, "warning");
-				var state = self.generateState();
-				state.answerErrors = res.errors;
-				console.log("Updating", state);
-				self.trigger(state);
+				if((typeof res.errors)  == "string") {
+					message = res.errors;
+					NotificationActions.showNotification(message, "warning");
+				} else {
+					NotificationActions.showNotification(message, "warning");
+					var state = self.generateState();
+					state.answerErrors = res.errors;
+					self.trigger(state);
+				}
 
 			}
 			LoaderActions.hideLoader();
 		}).catch(function(exception) {
+			console.error(exception);
 			LoaderActions.hideLoader();
 			NotificationActions.showNotification("Ocurrió un error al intentar validar las respuestas", "alert");
 		});
