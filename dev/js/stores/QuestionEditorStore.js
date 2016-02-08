@@ -4,6 +4,7 @@ const VariableEditorActions = require('../actions/QuestionEditorActions/Variable
 const AnswerEditorActions = require('../actions/QuestionEditorActions/AnswerEditorActions');
 const FormulationEditorActions = require('../actions/QuestionEditorActions/FormulationEditorActions');
 const QuestionAPI = require('../api/utils/question');
+const API = require('../api/API');
 const LoaderActions = require('../components/util/actions/LoaderActions');
 const NotificationActions = require('../components/util/actions/NotificationActions');
 var CkeditorController = require('../utils/ckeditor');
@@ -55,6 +56,28 @@ var QuestionEditorStore = Reflux.createStore({
 		})
 	},
 
+	exportAndDownloadQuestion() {
+		alert("zzzz");
+		this.getValueComponents();
+		var self = this;
+		var data = {
+			questionid: self.currentQuestion._id,
+			question: self.currentQuestion
+		}
+		LoaderActions.showLoader("Espere por favor");
+		QuestionAPI.exportQuestion(data).then(function(res) {
+			LoaderActions.hideLoader();
+			if(res.ok) {
+				QuestionAPI.donwloadQuestionExport({questionid: self.currentQuestion._id});
+			} else {
+				NotificationActions.showNotification("Ocurrió un error al validar y por lo tanto no se pudo exportar", "alert");
+			}
+		}).catch(function(error) {
+			LoaderActions.hideLoader();
+			NotificationActions.showNotification("Ocurrió un error no esperado, intente de nuevo más tarde. Si el problema persiste comuniquese con el administrador.", "alert");
+			console.error(error);
+		})
+	},
 
 
 	previewQuestion() {
@@ -67,14 +90,14 @@ var QuestionEditorStore = Reflux.createStore({
 		LoaderActions.showLoader("Espere por favor");
 		QuestionAPI.preview(data).then(function(res) {
 			LoaderActions.hideLoader();
-			var ok = res.ok;
-			if(ok) {
+			if(res.ok) {
 				window.open(res.url);
 			} else {
-				console.error("There was an error trying to preview question ");
+				NotificationActions.showNotification(res.message, "alert");
 			}
 		}).catch(function(error) {
 			LoaderActions.hideLoader();
+			NotificationActions.showNotification("Ocurrió un error no esperado, intente de nuevo más tarde. Si el problema persiste comuniquese con el administrador.", "alert");
 			console.error(error);
 		})
 	},
@@ -168,6 +191,7 @@ var QuestionEditorStore = Reflux.createStore({
 			questionId: self.currentQuestion._id
 		}
 		QuestionAPI.validateAnswers(data).then(function(res) {
+			LoaderActions.hideLoader();
 			if(res.ok) {
 				NotificationActions.showNotification("Respuestas validadas correctamente");
 			}
@@ -184,7 +208,6 @@ var QuestionEditorStore = Reflux.createStore({
 				}
 
 			}
-			LoaderActions.hideLoader();
 		}).catch(function(exception) {
 			console.error(exception);
 			LoaderActions.hideLoader();

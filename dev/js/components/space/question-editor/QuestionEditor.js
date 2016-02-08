@@ -8,6 +8,7 @@ var Collapsible = require('../../util/collapsible');
 var VariableEditor = require('./VariableEditor');
 var AnswerEditor = require('./AnswerEditor');
 var FormulationEditor = require('./FormulationEditor');
+var MetadataEditor = require('./MetadataEditor');
 
 var QuestionEditor = React.createClass({
 	mixins: [Reflux.connect(QuestionEditorStore, 'storeData')],
@@ -19,7 +20,7 @@ var QuestionEditor = React.createClass({
 	},
 
 	exportQuestion() {
-
+		QuestionEditorActions.exportAndDownloadQuestion();
 	},
 	saveQuestion() {
 		QuestionEditorActions.saveQuestion();
@@ -52,7 +53,7 @@ var QuestionEditor = React.createClass({
 		sections.push({
 			title: "Metadatos",
 			icon: "person",
-			content: (<div><h1>Metadatos</h1></div>)
+			content: (<MetadataEditor />)
 		})
 
 		return sections;
@@ -69,7 +70,7 @@ var QuestionEditor = React.createClass({
 				</section>
 				<nav className="navbar">
 					<div className="nav-actions">
-						<button className="nav-button">
+						<button className="nav-button" onClick={this.exportQuestion}>
 							<i className="material-icons icon">done</i>
 							<span className="text">Exportar</span>
 						</button>

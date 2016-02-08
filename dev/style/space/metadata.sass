@@ -1,0 +1,28 @@
+.MetadataEditor
+  padding: 10px
+  @include span-columns(12)
+  .group
+    margin-top: 15px
+    overflow: hidden
+
+    @include span-columns(6)
+    @include omega
+    label
+      @include span-columns(2 of 6)
+      @include omega
+    input, select, textarea
+      @include span-columns(4 of 6)
+      @include omega
+    @include media($medium-desktop)
+      @include span-columns(12)
+      label
+        @include span-columns(4)
+        @include omega
+      input, select, textarea
+        @include span-columns(8)
+        @include omega
+
+    @include media($mobile)
+      @include span-columns(12)
+      label, input, select, textarea
+        @include span-columns(12)

@@ -1,104 +1,118 @@
 const API = require('../API');
 const QuestionAPI = {
-  _routes: {
-    get: {
-      route: "/questions/:questionId",
-      method: API._REQUEST_METHOD.get,
-    },
-    create: {
-      route: "/folders/:folderid/questions",
-      method: API._REQUEST_METHOD.post
-    },
+	_routes: {
+		get: {
+			route: "/questions/:questionId",
+			method: API._REQUEST_METHOD.get,
+		},
+		create: {
+			route: "/folders/:folderid/questions",
+			method: API._REQUEST_METHOD.post
+		},
 
-    updateQuestionData: {
-      route: "/questions/:questionid/data",
-      method: API._REQUEST_METHOD.put
-    },
+		updateQuestionData: {
+			route: "/questions/:questionid/data",
+			method: API._REQUEST_METHOD.put
+		},
+		previewQuestion: {
+			route: "/questions/:questionid/preview",
+			method: API._REQUEST_METHOD.put
+		},
 
-    exportQuestionData: {
-      route: "/questions/:questionid/scorms",
-      method: API._REQUEST_METHOD.post
-    },
+		exportQuestion: {
+			route: "/questions/:questionid/export",
+			method: API._REQUEST_METHOD.put
+		},
+		donwloadQuestionExport: {
+			route: "/questions/:questionid/export/download",
+			method: API._REQUEST_METHOD.get
+		},
 
-    share: {
-      route: "/users/questions/:questionId",
-      method: API._REQUEST_METHOD.post,
-    },
+		share: {
+			route: "/users/questions/:questionId",
+			method: API._REQUEST_METHOD.post,
+		},
 
-    delete: {
-      route: "/questions/:questionId",
-      method: API._REQUEST_METHOD.delete,
-    },
+		delete: {
+			route: "/questions/:questionId",
+			method: API._REQUEST_METHOD.delete,
+		},
 
-    validateVariables: {
-      route: "/questions/:questionId/variables/validate",
-      method: API._REQUEST_METHOD.put
-    },
+		validateVariables: {
+			route: "/questions/:questionId/variables/validate",
+			method: API._REQUEST_METHOD.put
+		},
 
-    validateAnswers: {
-      route: "/questions/:questionId/answers/validate",
-      method: API._REQUEST_METHOD.put
-    },
-    preview: {
-      route: "/questions/:questionid/scorms/preview",
-      method: API._REQUEST_METHOD.put
-    }
-  },
-  createQuestion(data){
-    const route = this._routes.create;
-    return API.callAjaxRequest(route, data);
-  },
-  loadQuestion(data){
-    const route = this._routes.get;
-    return API.callAjaxRequest(route, data);
-  },
-  updateQuestionData(data){
-    const route = this._routes.updateQuestionData;
-    return API.callAjaxRequest(route, data);
-  },
+		validateAnswers: {
+			route: "/questions/:questionId/answers/validate",
+			method: API._REQUEST_METHOD.put
+		}
+	},
+	createQuestion(data){
+		const route = this._routes.create;
+		return API.callAjaxRequest(route, data);
+	},
+	loadQuestion(data){
+		const route = this._routes.get;
+		return API.callAjaxRequest(route, data);
+	},
+	updateQuestionData(data){
+		const route = this._routes.updateQuestionData;
+		return API.callAjaxRequest(route, data);
+	},
 
-  preview(data){
-    const route = this._routes.preview;
-    return API.callAjaxRequest(route, data);
-  },
+	preview(data){
+		const route = this._routes.previewQuestion;
+		return API.callAjaxRequest(route, data);
+	},
 
-  exportQuestionData(data, cb){
+	exportQuestionData(data, cb){
 
-    console.log("Data", data);
-    const route = this._routes.exportQuestionData;
+		console.log("Data", data);
+		const route = this._routes.exportQuestionData;
 
-    API.callAjaxRequest(route, data, (err, res) => {
-      if(err){
-        cb(err, null);
-      } else {
-        cb(!res.body.ok);
-      }
-    });
-  },
+		API.callAjaxRequest(route, data, (err, res) => {
+			if(err){
+				cb(err, null);
+			} else {
+				cb(!res.body.ok);
+			}
+		});
+	},
 
-  shareQuestion(data, cb) {
-    const route = this._routes.share;
-    API.callAjaxRequest(route, data, (err, res) => {
-      if (err) {
-        cb(true, null);
-      } else {
-        cb(!res.body.ok, res.body.question)
-      }
-    });
-  },
+	shareQuestion(data, cb) {
+		const route = this._routes.share;
+		API.callAjaxRequest(route, data, (err, res) => {
+			if (err) {
+				cb(true, null);
+			} else {
+				cb(!res.body.ok, res.body.question)
+			}
+		});
+	},
 
-  deleteQuestion(data) {
-    const route = this._routes.delete;
-    return API.callAjaxRequest(route, data);
-  },
-  validateVariables(data){
-    const route = this._routes.validateVariables;
-    return API.callAjaxRequest(route, data);
-  },
-  validateAnswers(data){
-    const route = this._routes.validateAnswers;
-    return API.callAjaxRequest(route, data);
-  }
+	donwloadQuestionExport(data) {
+		var route = this._routes.donwloadQuestionExport;
+		var url = API.getUrl();
+		url = url.replace(/api/,"static");
+		window.open(`${url}/${data.questionid}.zip`);
+	},
+	exportQuestion(data) {
+		const route = this._routes.exportQuestion;
+		return API.callAjaxRequest(route, data);
+	},
+	deleteQuestion(data) {
+		const route = this._routes.delete;
+		return API.callAjaxRequest(route, data);
+	},
+	validateVariables(data){
+		const route = this._routes.validateVariables;
+		return API.callAjaxRequest(route, data);
+	},
+	validateAnswers(data){
+		const route = this._routes.validateAnswers;
+		return API.callAjaxRequest(route, data);
+	}
 }
 
 module.exports = QuestionAPI;
