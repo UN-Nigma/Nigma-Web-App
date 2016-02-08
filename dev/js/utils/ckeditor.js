@@ -13,7 +13,7 @@ var CkeditorController = {
 		return this.currentInstance;
 	},
 	getValue() {
-		return this.currentInstance.getData();
+		return this.currentInstance.document.getBody().getHtml();
 	},
 	setValue(value) {
 		this.currentInstance.setData(value);

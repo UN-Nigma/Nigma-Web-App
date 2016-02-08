@@ -23,11 +23,13 @@
         &.close
           @include transform(rotate(135deg))
           @include transition(all 0.3s linear)
-    &-Complete
-      & > section
+    &-Complete, &-MultipleSelection
+      & > section, article
         border: 1px solid #e5e5e5
         border-radius: 4px
         margin-top: 10px
+    &-Complete, &-MultipleSelection
+      
       .general-options
         .content
           padding: 10px
@@ -166,7 +168,7 @@
                 cursor: pointer
                 color: #4285F4
 
-      .correct-values, .common-errors
+      .correct-values, .common-errors, .correctValues, .CommonErrors
         position: relative
         width: 100%
         overflow: hidden

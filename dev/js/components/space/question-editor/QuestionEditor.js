@@ -47,7 +47,7 @@ var QuestionEditor = React.createClass({
 		sections.push({
 			title: "Respuestas",
 			icon: "done",
-			content: (<AnswerEditor question={currentQuestion}/>)
+			content: (<AnswerEditor type={currentQuestion.type}/>)
 		})
 
 		sections.push({

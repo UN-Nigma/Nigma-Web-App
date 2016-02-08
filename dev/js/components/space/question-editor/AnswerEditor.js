@@ -4,15 +4,16 @@ var AnswerEditorActions = require('../../../actions/QuestionEditorActions/Answer
 const Reflux = require('reflux');
 var QuestionEditorStore = require('../../../stores/QuestionEditorStore');
 var AnswerCompleteType = require('./AnswerTypes/Complete');
+var MultipleSelection = require('./AnswerTypes/MultipleSelection');
 
 var AnswerEditor = React.createClass({
 
 	render() {
 		var AnswerTypeDom = null;
-		if(this.props.question.type == "Complete") {
+		if(this.props.type == "Complete") {
 			AnswerTypeDom = <AnswerCompleteType />;
-		} else {
-
+		} else if (this.props.type == "MultipleSelection" ){
+			AnswerTypeDom = <MultipleSelection />;
 		}
 		return (
 			<div className="AnswerEditor">

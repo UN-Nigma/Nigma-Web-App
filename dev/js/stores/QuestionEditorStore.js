@@ -9,6 +9,7 @@ const LoaderActions = require('../components/util/actions/LoaderActions');
 const NotificationActions = require('../components/util/actions/NotificationActions');
 var CkeditorController = require('../utils/ckeditor');
 var AceEditorController = require('../utils/AceEditor');
+var _ = require('underscore');
 
 var QuestionEditorStore = Reflux.createStore({
 	listenables: [QuestionEditorActions, VariableEditorActions, AnswerEditorActions, FormulationEditorActions],
@@ -244,10 +245,15 @@ var QuestionEditorStore = Reflux.createStore({
 		var answer = this.currentQuestion.answer;
 		if(answer.correctValues == undefined || answer.correctValues == null)
 			answer.correctValues = []
-		var correctValue = {};
-		answer.names.forEach((varName) => correctValue[varName] = "");
-		answer.correctValues.push(correctValue);
+		if(this.currentQuestion.type == "Complete") {
+			var correctValue = {};
+			answer.names.forEach((varName) => correctValue[varName] = "");
+			answer.correctValues.push(correctValue);
+		} else if (this.currentQuestion.type == "MultipleSelection") {
+			answer.correctValues.push("");
+		}
 		this.trigger(this.generateState());
+
 	},
 
 	deleteCorrectValue(index) {
@@ -262,12 +268,21 @@ var QuestionEditorStore = Reflux.createStore({
 		var answer = this.currentQuestion.answer;
 		if(answer.commonErrors == undefined || answer.commonErrors == null)
 			answer.commonErrors = []
-		var commonError = {
-			message: "",
-			values: {}
-		};
-		answer.names.forEach((varName) => commonError.values[varName] = "");
-		answer.commonErrors.push(commonError);
+		if(this.currentQuestion.type == "Complete"){
+			var commonError = {
+				message: "",
+				values: {}
+			};
+			answer.names.forEach((varName) => commonError.values[varName] = "");
+			answer.commonErrors.push(commonError);
+		} else if(this.currentQuestion.type == "MultipleSelection") {
+			var commonError = {
+				message: "",
+				value: ""
+			};
+			answer.commonErrors.push(commonError);
+		}
+
 		this.trigger(this.generateState());
 	},
 
@@ -285,7 +300,8 @@ var QuestionEditorStore = Reflux.createStore({
 	},
 	getValueComponents() {
 		if(CkeditorController.getInstance() != null) {
-			this.currentQuestion.formulation = CkeditorController.getValue();
+			var value = (CkeditorController.getValue());
+			this.currentQuestion.formulation = value;
 		}
 		if(AceEditorController.getInstance() != null) {
 			this.currentQuestion.variables = AceEditorController.getValue();
