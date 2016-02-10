@@ -11,7 +11,7 @@ var Space = require('./components/space/space');
 var QuestionEditor = require('./components/space/question-editor/QuestionEditor');
 
 
-var Loader = require('./components/util/Loader');
+var Loader = require('./components/util/loader');
 var Notification = require('./components/util/notification');
 
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'

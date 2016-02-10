@@ -26,7 +26,8 @@ function bundleScripts(watch){
   }
   bundler
     .transform(babelify.configure({
-      only: /dev/
+      only: /dev/,
+      presets: ["es2015", "react"]
     }) )
 
 
