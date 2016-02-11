@@ -16,8 +16,8 @@ var MultipleSelection = React.createClass({
 		return (
 			<article className="AnswerEditor-MultipleSelection">
 				<MultipleSelection.CorrectValues answer={answer} handleChange={this.handleChange}/>
-				<MultipleSelection.CommonErrors answer={answer}/>
-				<MultipleSelection.WrongValues answer={answer}/>
+				<MultipleSelection.CommonErrors answer={answer} handleChange={this.handleChange}/>
+				<MultipleSelection.WrongValues answer={answer} handleChange={this.handleChange}/>
 			</article>
 		);
 	}
@@ -36,19 +36,23 @@ MultipleSelection.CorrectValues = React.createClass({
 					<i className="action-icon material-icons" onClick={AnswerEditorActions.createCorrectValue}>add</i>
 				</section>
 				<section className="content">
-					{
-						this.props.answer.correctValues.map((correctValue, index) => {
-							return(
-								<article className="common-error-value" key={index} >
-									<div className="c-actions">
-										<i className="material-icons icon" onClick={AnswerEditorActions.deleteCorrectValue.bind(index)}>delete</i>
-									</div>
-									<label className="form-label">{`Valor correcto ${index + 1}`}</label>
-									<textarea data-path={`${path}.${index}`} className="form-control" value={correctValue} onChange={this.props.handleChange}/>
-								</article>
-							);
-						})
-					}
+						<div className="options">
+							{
+									this.props.answer.correctValues.map((correctValue, index) => {
+										return(
+											<div className="option" key={index} >
+												<section className="inputs">
+													<input placeholder={"Opción"} type="text" data-path={`${path}.${index}`} className="form-control value" value={correctValue} onChange={this.props.handleChange}/>
+												</section>
+												<div className="c-actions">
+													<i className="edit" onClick={AnswerEditorActions.deleteCorrectValue.bind(index)} />
+													<i className="delete" onClick={AnswerEditorActions.deleteCorrectValue.bind(index)}/>
+												</div>
+											</div>
+										);
+									})
+							}
+						</div>
 				</section>
 			</article>
 		);
@@ -66,20 +70,24 @@ MultipleSelection.CommonErrors = React.createClass({
 					<i className="action-icon material-icons" onClick={AnswerEditorActions.createCommonError}>add</i>
 				</section>
 				<section className="content">
-					{
-						this.props.answer.commonErrors.map((CommonError, index) => {
-							return(
-								<article className="common-error-value" key={index} >
-									<div className="c-actions">
-										<i className="material-icons icon" onClick={AnswerEditorActions.deleteCommonError.bind(index)}>delete</i>
-									</div>
-									<label className="form-label">{`Valor correcto ${index + 1}`}</label>
-									<textarea data-path={`${path}.${index}.value`} className="form-control" value={CommonError.value} onChange={this.props.handleChange}/>
-									<textarea data-path={`${path}.${index}.message`} className="form-control" value={CommonError.message} onChange={this.props.handleChange}/>
-								</article>
-							);
-						})
-					}
+					<div className="options">
+							{
+									this.props.answer.commonErrors.map((commonErrors, index) => {
+										return(
+											<article className="option" key={index} >
+												<section className="inputs">
+													<input type="text" placeholder={"Opción"} data-path={`${path}.${index}.value`} className="form-control value" value={commonErrors.value} onChange={this.props.handleChange}/>
+													<input type="text" data-path={`${path}.${index}.message`} className="form-control message" placeholder={"Retroalimentación"} value={commonErrors.message} onChange={this.props.handleChange}/>
+												</section>
+												<div className="c-actions">
+													<i className="edit" onClick={AnswerEditorActions.deleteCorrectValue.bind(index)} />
+													<i className="delete" onClick={AnswerEditorActions.deleteCommonError.bind(index)}/>
+												</div>
+											</article>
+										);
+									})
+							}
+						</div>
 				</section>
 			</article>
 		);
@@ -88,12 +96,32 @@ MultipleSelection.CommonErrors = React.createClass({
 
 MultipleSelection.WrongValues = React.createClass({
 	render() {
+		var path = "storeData.currentQuestion.answer.wrongValues";
 		return (
 			<article className="wrongValues">
 				<section className="s-title">
 					<i className="s-icon material-icons">error</i>
 					<span className="s-text">Valores Incorrectos</span>
-					<i className="action-icon material-icons" onClick={this.addCorrectValue}>add</i>
+					<i className="action-icon material-icons" onClick={AnswerEditorActions.createWrongValue}>add</i>
+				</section>
+				<section className="content">
+					<div className="options">
+							{
+									this.props.answer.wrongValues.map((wrongValue, index) => {
+										return(
+											<article className="option" key={index} >
+												<section className="inputs">
+													<input type="text" data-path={`${path}.${index}`} className="form-control value" value={wrongValue.value} placeholder={"Opción"} onChange={this.props.handleChange}/>
+												</section>
+												<div className="c-actions">
+													<i className="edit" onClick={AnswerEditorActions.editWrongValue.bind(index)} />
+													<i className="delete" onClick={AnswerEditorActions.deleteWrongValue.bind(index)}/>
+												</div>
+											</article>
+										);
+									})
+							}
+						</div>
 				</section>
 			</article>
 		);

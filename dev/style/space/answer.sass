@@ -3,7 +3,82 @@
     position: relative
     width: 100%
     padding: 10px
-    
+    &-MultipleSelection
+
+      .content
+        overflow: hidden
+        .options
+
+          .option
+            display: block
+            position: relative
+            padding: 5px
+            border-radius: 4px
+            border: 1px solid #eee 
+            .inputs
+              .message
+                margin-top: 5px
+            @include media($large-desktop)
+              @include span-columns(4)
+              @include omega(3n)
+              .inputs
+                @include span-columns(2.8 of 4)
+                .value, .message
+                  @include span-columns(2.8 of 2.8)
+
+              .c-actions
+                @include span-columns(1.2 of 4)
+
+            @include media($medium-desktop)
+              margin-top: 5px
+              @include span-columns(6)
+              @include omega(2n)
+              .inputs
+                @include span-columns(3.8 of 6)
+                .value, .message
+                  @include span-columns(3.8 of 3.8)
+              .c-actions
+                @include span-columns(2.2 of 6)
+
+            @include media($mobile)
+              @include span-columns(12)
+              @include omega
+              margin-top: 5px
+              overflow: hidden
+              .inputs
+                @include span-columns(12)
+                position: relative
+                margin-top: 35px
+                .value, .message
+                  @include span-columns(12)
+              .c-actions
+                position: absolute
+                top: 5px
+                right: 5px
+                float: right
+
+
+            .c-actions
+              .edit, .delete
+                &:before
+                  display: inline-block
+                  font-size: 1.3rem
+                  color: blue
+                  cursor: pointer
+                  font-family: "Material Icons"
+                  -webkit-font-feature-settings: 'liga'
+                  -webkit-font-smoothing: antialiased
+                  font-style: normal
+              .edit
+                &:before
+                  content: "edit"
+              .delete
+                &:before
+                  content: "delete"
+                  margin-left: 3px
+
+
+
     .s-title
       padding: 5px
       font-size: 16px
@@ -168,7 +243,7 @@
                 cursor: pointer
                 color: #4285F4
 
-      .correct-values, .common-errors, .correctValues, .CommonErrors
+      .correct-values, .common-errors, .correctValues, .CommonErrors, .wrongValues
         position: relative
         width: 100%
         overflow: hidden
@@ -176,6 +251,7 @@
           position: relative
           width: 100%
           padding: 10px
+
           .correct-value, .common-error-value
             input.input-error              
               -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px #c9302c;

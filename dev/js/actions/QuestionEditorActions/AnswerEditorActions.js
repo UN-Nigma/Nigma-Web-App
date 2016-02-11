@@ -13,6 +13,10 @@ var AnswerEditorActions = Reflux.createActions([
 	//-------------------
 	"createCommonError",
 	"deleteCommonError",
+	//--------------------
+	"createWrongValue",
+	"deleteWrongValue",
+	"editWrongValue"
 
 ]);
 

@@ -292,6 +292,24 @@ var QuestionEditorStore = Reflux.createStore({
 		answer.commonErrors.splice(index, 1);
 		this.trigger(this.generateState());
 	},
+
+	createWrongValue() {
+		this.getValueComponents();
+		var answer = this.currentQuestion.answer;
+		if(answer.wrongValues == undefined || answer.wrongValues == null)
+			answer.wrongValues = []
+		if(this.currentQuestion.type == "MultipleSelection") {
+			answer.wrongValues.push("");
+		}
+		this.trigger(this.generateState());
+	},
+
+	deleteWrongValue(index) {
+		this.getValueComponents();
+		var answer = this.currentQuestion.answer;
+		answer.wrongValues.splice(index, 1);
+		this.trigger(this.generateState());
+	},
 	//Helpers
 
 	getCurrentVariableNames(code) {
