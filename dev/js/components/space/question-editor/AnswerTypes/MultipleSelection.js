@@ -10,6 +10,7 @@ var MultipleSelection = React.createClass({
 	mixins: [Reflux.connect(QuestionEditorStore, 'storeData'), DeepLinkStateMixin],
 	handleChange(evt) {
 		this.changeState(evt, this);
+		console.log(evt.target.value)
 	},
 	render() {
 		var answer = this.state.storeData.currentQuestion.answer;
@@ -111,7 +112,7 @@ MultipleSelection.WrongValues = React.createClass({
 										return(
 											<article className="option" key={index} >
 												<section className="inputs">
-													<input type="text" data-path={`${path}.${index}`} className="form-control value" value={wrongValue.value} placeholder={"Opción"} onChange={this.props.handleChange}/>
+													<input type="text" data-path={`${path}.${index}`} className="form-control value" value={wrongValue} placeholder={"Opción"} onChange={this.props.handleChange}/>
 												</section>
 												<div className="c-actions">
 													<i className="edit" onClick={AnswerEditorActions.editWrongValue.bind(index)} />
