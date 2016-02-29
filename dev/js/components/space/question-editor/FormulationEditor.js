@@ -1,5 +1,4 @@
 var React = require('react');
-var CkeditorController = require('../../../utils/ckeditor');
 var FormulationEditorActions = require('../../../actions/QuestionEditorActions/FormulationEditorActions');
 var FormulationEditor = React.createClass({
 	saveData(data) {
@@ -14,10 +13,13 @@ var FormulationEditor = React.createClass({
 	},
 
 	componentDidMount() {
+		var CkeditorController = QuestionEditorStore.getCKeditorController();
 		this.editor = CkeditorController.createInstance('ck-editor');
 		CkeditorController.setValue(this.props.question.formulation);
+		console.log(CkeditorController);
 	},
 	componentDidUpdate(prevProps, prevState) {
+		var CkeditorController = QuestionEditorStore.getCKeditorController();
 		CkeditorController.setValue(this.props.question.formulation);
 	},
 

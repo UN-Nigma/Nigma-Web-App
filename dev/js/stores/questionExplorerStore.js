@@ -2,7 +2,8 @@ const Reflux = require('reflux');
 const QuestionExplorerActions = require('../actions/questionExplorerActions');
 const FolderAPI = require('../api/utils/folder');
 const QuestionAPI = require('../api/utils/question');
-
+const LoaderActions = require('../components/util/actions/LoaderActions');
+const NotificationActions = require('../components/util/actions/NotificationActions');
 
 
 var QuestionExplorerStore = Reflux.createStore({
@@ -17,12 +18,16 @@ var QuestionExplorerStore = Reflux.createStore({
 
 	listMyFolders() {
 		var self = this;
+		LoaderActions.showLoader("Cargando datos, espere por favor");
 		FolderAPI.listFolders({}).then(function(res) {
 			self.currentFolder = res.root_folder;
 			self.currentRoute = self.generateRoute(self.currentFolder);
 			self.trigger(self.generateState());
+			loader.hideLoader();
 		}).catch(function(error) {
 			console.error(error);
+			NotificationActions.showNotification("Ocurrió un error, intente de nuevo más tarde", "alert");
+			loader.hideLoader();
 		});
 	},
 	listSharedFolders() {
@@ -33,38 +38,47 @@ var QuestionExplorerStore = Reflux.createStore({
 			self.trigger(self.generateState());
 		}).catch(function(error) {
 			console.error(error);
+			NotificationActions.showNotification("Ocurrió un error, intente de nuevo más tarde", "alert");
 		});
 	},
 
 	changeFolder(folderid) {
 		var self = this;
+		LoaderActions.showLoader("Espere por favor");
 		FolderAPI.getFolder({folderid: folderid}).then(function(res) {
 			var folder = res.folder;
 			self.currentFolder = folder;
 			self.currentRoute = self.generateRoute(self.currentFolder);
 			self.sort(self.sortOptions.field, self.sortOptions.order);
 			self.trigger(self.generateState());
+			LoaderActions.hideLoader();
 		}).catch(function(error) {
 			console.error(error);
+			NotificationActions.showNotification("Ocurrió un error, intente de nuevo más tarde", "alert");
+			LoaderActions.hideLoader();
 		})
 	},
 
-	createQuestion(questionName, parentFolderId) {
+	createQuestion(questionData, parentFolderId) {
 		var self = this;
 		var data = {
 			folderid: parentFolderId,
-			question: {
-				name: questionName
-			}
+			question: questionData
 		}
+		LoaderActions.showLoader("Creando pregunta");
 		QuestionAPI.createQuestion(data)
 		.then(function(res) {
 			var question = res.question;
 			self.currentFolder.questions.push(question);
 			self.trigger(self.generateState());
+			LoaderActions.hideLoader();
+			NotificationActions.showNotification("Pregunta creada con éxito");
+
 		})
 		.catch(function(error) {
 			console.error(error);
+			NotificationActions.showNotification("Ocurrió un error, intente de nuevo más tarde", "alert");
+			LoaderActions.hideLoader();
 		})
 	},
 
@@ -84,6 +98,7 @@ var QuestionExplorerStore = Reflux.createStore({
 		})
 		.catch(function(error) {
 			console.error(error);
+			NotificationActions.showNotification("Ocurrió un error, intente de nuevo más tarde", "alert");
 		});
 	},
 
@@ -96,6 +111,7 @@ var QuestionExplorerStore = Reflux.createStore({
 		})
 		.catch(function(error) {
 			console.error(error)
+			NotificationActions.showNotification("Ocurrió un error, intente de nuevo más tarde", "alert");
 		})
 	},
 
@@ -108,6 +124,7 @@ var QuestionExplorerStore = Reflux.createStore({
 		})
 		.catch(function(error) {
 			console.error(error)
+			NotificationActions.showNotification("Ocurrió un error, intente de nuevo más tarde", "alert");
 		});
 	},
 

@@ -1,6 +1,6 @@
 var React = require('react');
 var Reflux = require('reflux');
-var QuestionEditorStore = require('../../../stores/QuestionEditorStore');
+window.QuestionEditorStore = require('../../../stores/QuestionEditorStore');
 var QuestionEditorActions = require('../../../actions/QuestionEditorActions');
 var Collapsible = require('../../util/collapsible');
 

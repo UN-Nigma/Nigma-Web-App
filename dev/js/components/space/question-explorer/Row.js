@@ -24,7 +24,7 @@ var Row = React.createClass({
 	},
 
 	openQuestion(evt) {
-		this.context.router.push(`/space/u/question/${this.props.item._id}`);
+		window.open(`/space/u/question/${this.props.item._id}`);
 	},
 
 	selectRow(evt) {

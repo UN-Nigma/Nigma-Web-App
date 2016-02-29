@@ -7,15 +7,17 @@ const QuestionAPI = require('../api/utils/question');
 const API = require('../api/API');
 const LoaderActions = require('../components/util/actions/LoaderActions');
 const NotificationActions = require('../components/util/actions/NotificationActions');
-var CkeditorController = require('../utils/ckeditor');
+var CkeditorControllerClass = require('../utils/ckeditor');
 var AceEditorController = require('../utils/AceEditor');
 var _ = require('underscore');
 
 var QuestionEditorStore = Reflux.createStore({
 	listenables: [QuestionEditorActions, VariableEditorActions, AnswerEditorActions, FormulationEditorActions],
 	currentQuestion: null,
+	CkeditorController: null,
 	init() {},
 	getInitialState() {
+		this.CkeditorController = new CkeditorControllerClass();
 		return this.generateState();
 	},
 
@@ -317,18 +319,23 @@ var QuestionEditorStore = Reflux.createStore({
  		return res;
 	},
 	getValueComponents() {
-		if(CkeditorController.getInstance() != null) {
-			var value = (CkeditorController.getValue());
+		console.log(this.CkeditorController);
+		if(this.CkeditorController.getInstance() != null) {
+			var value = (this.CkeditorController.getValue());
 			this.currentQuestion.formulation = value;
 		}
 		if(AceEditorController.getInstance() != null) {
 			this.currentQuestion.variables = AceEditorController.getValue();
 		}
 	},
+
+	getCKeditorController() {
+		return this.CkeditorController;
+	},
 	generateState() {
 		var self = this;
 		return {
-			currentQuestion: self.currentQuestion,
+			currentQuestion: self.currentQuestion
 		};
 	}
 });

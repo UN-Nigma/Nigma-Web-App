@@ -56,6 +56,7 @@ const Nigma = React.createClass({
         </div>
         <Loader />
         <Notification />
+        <div id="modal_container"/>
       </div>
     )
   }
@@ -65,7 +66,6 @@ const Nigma = React.createClass({
 
 var Routes = React.createClass({
 	render() {
-		console.log("Do something shit")
 		return (
 			<Router history={browserHistory}>
 				<Route path="/" component={Nigma}>
