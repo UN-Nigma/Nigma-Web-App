@@ -9,6 +9,7 @@ var AnswerEditorActions = Reflux.createActions([
 	"validateAnswer",
 	//-----------------
 	"createCorrectValue",
+	"editCorrectValue",
 	"deleteCorrectValue",
 	//-------------------
 	"createCommonError",

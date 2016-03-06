@@ -4,6 +4,7 @@ var AnswerEditorActions = require('../../../../actions/QuestionEditorActions/Ans
 var QuestionEditorStore = require('../../../../stores/QuestionEditorStore');
 var DeepLinkStateMixin = require('../../../../mixins/DeepLinkState');
 var Tooltip = require('../../../util/popover');
+var Modal = require('../../../util/modal');
 
 var currentTooltip = null;
 var MultipleSelection = React.createClass({
@@ -12,13 +13,16 @@ var MultipleSelection = React.createClass({
 		this.changeState(evt, this);
 		console.log(evt.target.value)
 	},
+	modifyState(path, value) {
+		this.manualChangeState(path, value, this);
+	},
 	render() {
 		var answer = this.state.storeData.currentQuestion.answer;
 		return (
 			<article className="AnswerEditor-MultipleSelection">
-				<MultipleSelection.CorrectValues answer={answer} handleChange={this.handleChange}/>
-				<MultipleSelection.CommonErrors answer={answer} handleChange={this.handleChange}/>
-				<MultipleSelection.WrongValues answer={answer} handleChange={this.handleChange}/>
+				<MultipleSelection.CorrectValues answer={answer} handleChange={this.handleChange} changeState={this.modifyState}/>
+				<MultipleSelection.CommonErrors answer={answer} handleChange={this.handleChange} changeState={this.modifyState}/>
+				<MultipleSelection.WrongValues answer={answer} handleChange={this.handleChange} changeState={this.modifyState}/>
 			</article>
 		);
 	}
@@ -26,7 +30,11 @@ var MultipleSelection = React.createClass({
 });
 
 MultipleSelection.CorrectValues = React.createClass({
-
+	editCorrectValue(index) {
+		var content = <EditNewModal  type={"correctValues"} initialOption={this.props.answer.correctValues[index]} index={index} saveFunction={this.props.changeState} />
+		var modal = React.render(content, document.getElementById('modal_container'));
+		modal.openModal();
+	},
 	render() {
 		var path = "storeData.currentQuestion.answer.correctValues";
 		return (
@@ -43,10 +51,10 @@ MultipleSelection.CorrectValues = React.createClass({
 										return(
 											<div className="option" key={index} >
 												<section className="inputs">
-													<input placeholder={"Opción"} type="text" data-path={`${path}.${index}`} className="form-control value" value={correctValue} onChange={this.props.handleChange}/>
+													<div dangerouslySetInnerHTML={{__html: correctValue}} />
 												</section>
 												<div className="c-actions">
-													<i className="edit" onClick={AnswerEditorActions.deleteCorrectValue.bind(index)} />
+													<i className="edit" onClick={this.editCorrectValue.bind(this, index)} />
 													<i className="delete" onClick={AnswerEditorActions.deleteCorrectValue.bind(index)}/>
 												</div>
 											</div>
@@ -61,6 +69,12 @@ MultipleSelection.CorrectValues = React.createClass({
 });
 
 MultipleSelection.CommonErrors = React.createClass({
+	editCommonError(index) {
+		console.log(this.props.answer.commonErrors);
+		var content = <EditNewModal  type={"commonErrors"} initialOption={this.props.answer.commonErrors[index].value} index={index} saveFunction={this.props.changeState} />
+		var modal = React.render(content, document.getElementById('modal_container'));
+		modal.openModal();
+	},
 	render() {
 		var path = "storeData.currentQuestion.answer.commonErrors";
 		return (
@@ -77,11 +91,11 @@ MultipleSelection.CommonErrors = React.createClass({
 										return(
 											<article className="option" key={index} >
 												<section className="inputs">
-													<input type="text" placeholder={"Opción"} data-path={`${path}.${index}.value`} className="form-control value" value={commonErrors.value} onChange={this.props.handleChange}/>
+													<div dangerouslySetInnerHTML={{__html: commonErrors.value}} />
 													<input type="text" data-path={`${path}.${index}.message`} className="form-control message" placeholder={"Retroalimentación"} value={commonErrors.message} onChange={this.props.handleChange}/>
 												</section>
 												<div className="c-actions">
-													<i className="edit" onClick={AnswerEditorActions.deleteCorrectValue.bind(index)} />
+													<i className="edit" onClick={this.editCommonError.bind(this, index)} />
 													<i className="delete" onClick={AnswerEditorActions.deleteCommonError.bind(index)}/>
 												</div>
 											</article>
@@ -96,6 +110,11 @@ MultipleSelection.CommonErrors = React.createClass({
 });
 
 MultipleSelection.WrongValues = React.createClass({
+	editWrongValue(index) {
+		var content = <EditNewModal  type={"wrongValues"} initialOption={this.props.answer.wrongValues[index]} index={index} saveFunction={this.props.changeState} />
+		var modal = React.render(content, document.getElementById('modal_container'));
+		modal.openModal();
+	},
 	render() {
 		var path = "storeData.currentQuestion.answer.wrongValues";
 		return (
@@ -112,10 +131,10 @@ MultipleSelection.WrongValues = React.createClass({
 										return(
 											<article className="option" key={index} >
 												<section className="inputs">
-													<input type="text" data-path={`${path}.${index}`} className="form-control value" value={wrongValue} placeholder={"Opción"} onChange={this.props.handleChange}/>
+													<div dangerouslySetInnerHTML={{__html: wrongValue}} />
 												</section>
 												<div className="c-actions">
-													<i className="edit" onClick={AnswerEditorActions.editWrongValue.bind(index)} />
+													<i className="edit" onClick={this.editWrongValue.bind(this, index)} />
 													<i className="delete" onClick={AnswerEditorActions.deleteWrongValue.bind(index)}/>
 												</div>
 											</article>
@@ -127,6 +146,61 @@ MultipleSelection.WrongValues = React.createClass({
 			</article>
 		);
 	}
+});
+
+
+var EditNewModal = React.createClass({
+	mixins: [DeepLinkStateMixin],
+	getDefaultProps() {
+		return {
+			initialText: "",
+			initialOption: ""
+		};
+	},
+	getInitialState() {
+		var self = this;
+		return {
+			text: self.props.initialText || ""
+		};
+	},
+	handleChange(evt) {
+		this.changeState(evt, this);
+	},
+	openModal() {
+		this.refs.modal.openModal();
+	},
+	cancelModal() {
+
+	},
+	saveChanges() {
+		var type = this.props.type;
+		var value = this.CkeditorController.getValue();
+		if(type === "correctValues") {
+			this.props.saveFunction(`storeData.currentQuestion.answer.correctValues.${this.props.index}`, value);
+		} else if(type === "commonErrors") {
+			this.props.saveFunction(`storeData.currentQuestion.answer.commonErrors.${this.props.index}.value`, value);
+		} else if(type == "wrongValues") {
+			this.props.saveFunction(`storeData.currentQuestion.answer.wrongValues.${this.props.index}`, value);
+
+		}
+	},
+	render() {
+		return (
+			<div className="ValueEditor">
+				<Modal title="Editor" ref="modal" positiveActionName="Guardar" positiveAction={this.saveChanges} negativeAction={this.cancelModal}>
+					<div className="ck-editor" id="ck-editor-modal"/>
+				</Modal>
+			</div>
+		);
+	},
+
+	componentDidMount() {
+		var Ckeditor = require('../../../../utils/ckeditor');
+		this.CkeditorController = new  Ckeditor();
+		this.CkeditorController.createInstance('ck-editor-modal');
+		this.CkeditorController.setValue(this.props.initialOption);
+	},
+
 });
 
 module.exports = MultipleSelection;

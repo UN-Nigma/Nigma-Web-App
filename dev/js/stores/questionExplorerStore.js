@@ -23,11 +23,11 @@ var QuestionExplorerStore = Reflux.createStore({
 			self.currentFolder = res.root_folder;
 			self.currentRoute = self.generateRoute(self.currentFolder);
 			self.trigger(self.generateState());
-			loader.hideLoader();
+			LoaderActions.hideLoader();
 		}).catch(function(error) {
 			console.error(error);
 			NotificationActions.showNotification("Ocurrió un error, intente de nuevo más tarde", "alert");
-			loader.hideLoader();
+			LoaderActions.hideLoader();
 		});
 	},
 	listSharedFolders() {

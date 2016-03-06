@@ -2,7 +2,6 @@ var React = require('react');
 
 var Modal = React.createClass({
 	propTypes: {
-		content:  React.PropTypes.element.isRequired,
 		negativeAction: React.PropTypes.func,
 		positiveAction: React.PropTypes.func
 	},

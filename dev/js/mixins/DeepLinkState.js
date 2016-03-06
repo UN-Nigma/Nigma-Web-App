@@ -22,13 +22,7 @@ var DeepLinkState = {
 		}
 	},
 
-
-	changeState(evt, component) {
-		var target = evt.target;
-		var path = target.getAttribute('data-path');
-		var type = target.getAttribute('data-type');
-		var value = this._convertToNativeType(target.value, type);
-		var objectPath = path.split('.') || [];
+	_changeState(objectPath, value, component) {
 		if(objectPath.length == 0)
 			return;
 		var state = component.state;
@@ -43,6 +37,18 @@ var DeepLinkState = {
 
 		item[objectPath[objectPath.length -1]] = value;
 		component.setState(state);
+	},
+	changeState(evt, component) {
+		var target = evt.target;
+		var path = target.getAttribute('data-path');
+		var type = target.getAttribute('data-type');
+		var value = this._convertToNativeType(target.value, type);
+		var objectPath = path.split('.') || [];
+		this._changeState(objectPath, value, component);
+	},
+	manualChangeState(path, value, component) {
+		var objectPath = path.split('.') || [];
+		this._changeState(objectPath, value, component);
 	}
 };
 
