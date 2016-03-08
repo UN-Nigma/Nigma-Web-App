@@ -1,0 +1,31 @@
+.home
+	font-size: 16px
+	.TopNavbar
+
+	#about
+		background: url("/images/home/about.jpg")
+		background-position: center
+		background-size: cover
+		height: 768px
+		+display(flex)
+		+flex-direction(row)
+		+align-items(center)
+		+justify-content(center)
+		.description
+			width: flex-grid(6)
+			background-color: rgba(255, 255, 255,0.8)
+			color: black
+			border-radius: 4px
+			.title
+				.text
+					padding: 0
+					margin: 10px
+					text-align: center
+					font-size: 2rem
+					font-weight: bold
+			.content
+				p
+					padding: 0
+					margin: 10px
+					text-align: justify
+					font-size: 1.2rem

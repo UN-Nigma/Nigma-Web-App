@@ -30,11 +30,15 @@ $topbar-color: #3B8761
       
       min-width: 100px
       padding: 0
-      span
+      span, a
         margin: 5px
         display: block
         line-height: $topbar-size - 10px 
         text-align: center
+        text-decoration: none
+        color: white
+        &:hover
+          text-decoration: none
       &.logo
         img
           height: $topbar-size - 10px

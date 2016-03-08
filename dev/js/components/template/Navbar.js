@@ -1,5 +1,6 @@
 import React  from 'react'
 import UserActions from '../../actions/UserActions'
+import UserStore from '../../stores/UserStore'
 var Navbar = React.createClass({
 	contextTypes: {
 		router: React.PropTypes.object.isRequired
