@@ -1,65 +1,26 @@
-const React = require("react");
-
-const Auth = require("./utils/auth");
-const UserStore = require('./stores/user');
-const UserActions = require('./actions/user');
-const injectTapEventPlugin = require("react-tap-event-plugin");
+import React from "react"
 
 //Components
-var SignIn = require('./components/login/complete');
-var Space = require('./components/space/space');
-var QuestionEditor = require('./components/space/question-editor/QuestionEditor');
+import Admin from './components/space/Admin'
+import Explorer from './components/space/Explorer'
+import QuestionEditor from './components/space/question-editor/QuestionEditor'
+import Home from "./components/home/home"
 
-
-var Loader = require('./components/util/loader');
-var Notification = require('./components/util/notification');
+//Utilities
+import Loader from './components/util/loader'
+import Notification from './components/util/notification'
 
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+
+
 const Nigma = React.createClass({
-
-
-  getInitialState() {
-    return {
-      user: ""
-    }
-  },
-
-  componentWillMount: function () {
-    UserActions.setUserStore();
-    UserStore.addChangeListener(this._handleChange);
-    if (UserStore.getUser()) {
-      this.setState({
-        user: UserStore.getUser().name
-      });
-    }
-  },
-
-  componentWillUnmount: function () {
-    UserStore.removeChangeListener(this._handleChange);
-  },
-
-  _handleChange() {
-    this.setState({
-      user: UserStore.getUser().name
-    });
-  },
-
-  onChange: function () {
-    this.setState({name: UserStore.getUser().name});
-  },
-
-  render(){
-    return (
-      <div className="app">
-        <div className="Nigma">
-        	{this.props.children}
-        </div>
-        <Loader />
-        <Notification />
-        <div id="modal_container"/>
-      </div>
-    )
-  }
+	render(){
+		return (
+			<div className="app">
+				{this.props.children}
+			</div>
+		)
+	}
 });
 
 
@@ -69,11 +30,13 @@ var Routes = React.createClass({
 		return (
 			<Router history={browserHistory}>
 				<Route path="/" component={Nigma}>
-				  <Route path="/login/:token" component={SignIn} />
-				  <Route path="/space" component={Space} />
-				  <Route path="/space/u/folder/:folderId" component={Space} />
-				  <Route path="/space/u/question/:questionId" component={QuestionEditor} />
-				  <IndexRoute 	component={Space}/>
+					<IndexRoute component={Home} />
+					<Route path="home" component={Home}/>
+					<Route path="admin" component={Admin}>
+						<IndexRoute component={Explorer} />
+						<Route path="folder/:folderId" component={Explorer} />
+						<Route path="question/:questionId" component={QuestionEditor} />
+					</Route>
 				</Route>
 			</Router>
 		);

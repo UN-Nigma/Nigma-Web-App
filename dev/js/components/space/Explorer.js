@@ -13,7 +13,7 @@ var QuestionExplorerActions = require('../../actions/questionExplorerActions');
 //Components
 var Modal = require('../util/modal');
 
-var Space = React.createClass({
+var Explorer = React.createClass({
 	mixins: [Reflux.connect(QuestionExplorerStore, 'storeData')],
 	createQuestion() {
 		var content = <CreateQuestionModal currentFolderId={this.state.storeData.currentFolder._id} />
@@ -25,6 +25,8 @@ var Space = React.createClass({
 	componentWillReceiveProps: function(nextProps) {
 		if(nextProps.params.folderId != undefined && nextProps.params.folderId != null) {
 			QuestionExplorerActions.changeFolder(nextProps.params.folderId);
+		} else {
+			QuestionExplorerActions.listMyFolders();
 		}
 	},
 
@@ -105,4 +107,4 @@ var CreateQuestionModal = React.createClass({
 
 });
 
-module.exports = Space;
+module.exports = Explorer;

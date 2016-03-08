@@ -87,6 +87,11 @@ gulp.task('images', function() {
     .pipe(gulp.dest('dist/images'))
 });
 
+gulp.task('lib', function() {
+  gulp.src('dev/lib/**/*')
+    .pipe(gulp.dest('dist/lib'))
+});
+
 /**
  * CKEDITOR TASK
  * ************
@@ -133,7 +138,9 @@ gulp.task('watch', function() {
   gulp.watch('dev/js/libs/**/*.js', ['ckeditor']);
   gulp.watch('dev/**/*.html', ['html']);
   gulp.watch('dev/images/**.*', ['images']);
+  gulp.watch('dev/lib/**.*', ['lib']);
 })
+
 
 gulp.task('serve', ['build', 'watch'], function() {
 		var historyApiFallback = require('connect-history-api-fallback')
@@ -147,5 +154,5 @@ gulp.task('serve', ['build', 'watch'], function() {
 });
 
 
-gulp.task('build', ['images', 'sass', 'ckeditor', 'html', 'browserify']);
+gulp.task('build', ['lib', 'images', 'sass', 'ckeditor', 'html', 'browserify']);
 gulp.task('dev', ['build', 'watch']);

@@ -6,7 +6,7 @@ var NavigatorPath = React.createClass({
     router: React.PropTypes.object.isRequired
   },
 	changeFolder() {
-		this.context.router.push(`/space/u/folder/${this.props.folder._id}`);
+		this.context.router.push(`/admin/folder/${this.props.folder._id}`);
 	},
 
 	render() {

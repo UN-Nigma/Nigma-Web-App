@@ -60,7 +60,6 @@ var QuestionEditorStore = Reflux.createStore({
 	},
 
 	exportAndDownloadQuestion() {
-		alert("zzzz");
 		this.getValueComponents();
 		var self = this;
 		var data = {

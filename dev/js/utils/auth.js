@@ -18,9 +18,13 @@ const Auth = {
     return JSON.parse(localStorage.getItem("user"));
   },
 
-  logout(cb) {
-    localStorage.clear();
-    cb(false);
+  logout() {
+  	try {
+    	localStorage.clear();
+    	return true;
+  	} catch (exception) {
+    	return false;
+  	}
   },
 
   getToken() {

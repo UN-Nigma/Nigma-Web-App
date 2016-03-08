@@ -25,10 +25,10 @@
           text-align: left
           padding-left: 16px
           font-size: 13px
-          @include display(flex)
-          @include flex-direction(row)
-          @include justify-content(flex-start);
-          @include align-items(center);
+          +display(flex)
+          +flex-direction(row)
+          +justify-content(flex-start);
+          +align-items(center);
 
         &.clickable, &.clickable.clicked.up, &.clickable.clicked.down
           cursor: pointer
@@ -78,10 +78,10 @@
       box-sizing: border-box
       overflow: hidden
       .name
-        @include display(flex)
-        @include flex-direction(row)
-        @include justify-content(flex-start);
-        @include align-items(flex-start);
+        +display(flex)
+        +flex-direction(row)
+        +justify-content(flex-start);
+        +align-items(flex-start);
         max-height: 44px
         height: 44px
         .material-icons
@@ -102,7 +102,7 @@
   .Row.selected
     background-color: #4285F4
     color: white
-    @include transition(background-color 0.3s ease-in-out)
+    +transition(background-color 0.3s ease-in-out)
     .cell
       border-bottom: none
       .name

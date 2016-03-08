@@ -18,13 +18,11 @@ var Row = React.createClass({
 	},
 
 	changeFolder(evt) {
-		//QuestionExplorerActions.changeFolder(this.props.item._id)
-		this.context.router.push(`/space/u/folder/${this.props.item._id}`);
-
+		this.context.router.push(`/admin/folder/${this.props.item._id}`);
 	},
 
 	openQuestion(evt) {
-		window.open(`/space/u/question/${this.props.item._id}`);
+		window.open(`/admin/question/${this.props.item._id}`);
 	},
 
 	selectRow(evt) {
