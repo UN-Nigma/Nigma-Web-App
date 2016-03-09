@@ -17,19 +17,23 @@ var UserStore = Reflux.createStore({
 	},
 
 	login(email, password) {
-		if(user) {
+		if(this.user) {
 			browserHistory.push("/space");
 		} else {
 			var self = this;
 			LoaderActions.showLoader("Inciando sesión, espere por favor.");
 			UserApi.login(email, password).then(function(res) {
 				Auth.loginComplete(res.token);
-			}).then(UserApi.getData).then(function(res) {
-				Auth.saveUserData(res.user);
-				LoaderActions.hideLoader();
-				browserHistory.push("/space");
-			}).catch(function(error) {
-				console.log(error);
+				browserHistory.push("/admin");
+			})
+			// }).then(UserApi.getData).then(function(res) {
+			// 	Auth.saveUserData(res.user);
+			// 	this.user = res.user;
+			// 	LoaderActions.hideLoader();
+			// 	browserHistory.push("/space");
+			// })
+			.catch(function(error) {
+				console.error(error);
 				LoaderActions.hideLoader();
 				NotificationActions.showNotification("Credenciales invalidas", "alert");
 			});
