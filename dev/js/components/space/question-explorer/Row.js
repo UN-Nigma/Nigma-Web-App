@@ -83,8 +83,7 @@ var Row = React.createClass({
 				</div>
 				<div className="cell">
 					<div className="buttons">
-						<a className="btn-floating btn-medium waves-effect waves-light green" onClick={onDoubleClickFunction}><i className="material-icons">publish</i></a>
-						<a className="btn-floating btn-medium waves-effect waves-light red" onClick={this.deleteItem}><i className="material-icons">delete</i></a>
+						<button className="round-button danger" onClick={this.deleteItem}><i className="material-icons">delete</i></button>
 					</div>
 				</div>
 			</div>

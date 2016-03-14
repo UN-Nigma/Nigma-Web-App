@@ -15,44 +15,55 @@
     height: $topbar-size
     background-color: rgb(250,250,250)
     z-index: 8
+    +display(flex)
+    +flex-direction(row)
+    +padding(null 10px null 10px)
     .Navigator
-      @include span-columns(9)
-      @include display(flex)
-      @include flex-direction(row)
-      @include justify-content(flex-start);
-      @include align-items(center);
+      +display(flex)
+      +flex-direction(row)
+      +justify-content(flex-start)
+      +align-items(center)
+      +flex(1)      
       height: $topbar-size
-      -webkit-flex: 1 1 auto
-      flex: 1 1 auto      
-      position: relative
       overflow-x: auto
       overflow-y: hidden
-      @include omega
-      @include media($mobile)
-        @include span-columns(4)
-        @include omega
+      +media($mobile)
       
       .path
         height: 48px
         font-size: 16px
         box-sizing: border-box
+        +display(flex)
+        +flex-direction(row)
+        +align-items(center)
+        +flex-shrink(0)
+        &:nth-last-of-type(1)
+          .name
+            font-weight: bold
+            &:hover
+              box-shadow: none
+              background-color: transparent
+              border: 1px solid transparent
+              cursor: default
+        &:nth-last-of-type(n+2)
+          &:after
+            content: "keyboard_arrow_right"
+            font-family: 'Material Icons'
+            -webkit-font-feature-settings: 'liga'
+            font-size: 20px
+            display: inline-block
+            padding: 5px
         .name
           cursor: pointer
-          line-height: 48px
           padding: 5px
           box-sizing: border-box
+          border: 1px solid transparent
           &:hover
             box-shadow: 0 1px 2px 0 rgba(0,0,0,.1)
             background-color: #fff
             border: 1px solid #c2c2c2
             border-radius: 2px
-        .name.last
-          font-weight: bold
-          &:hover
-            box-shadow: none
-            background-color: transparent
-            border: none
-            cursor: default
+
         .separator
           line-height: 30px
           padding-left: 5px
@@ -71,18 +82,16 @@
         width: 100%
         flex: 1
     .Actions
-      @include span-columns(3)
-      
-      @include display(flex)
-      @include flex-direction(row)
-      @include justify-content(flex-center)
-      @include align-items(center)
+      +display(flex)
+      +flex-direction(row)
+      +justify-content(flex-center)
+      +align-items(center)
       height: $topbar-size
-      @include omega
+      +omega
 
       & > *
         margin: 10px
-        @include flex(1)
+        +flex(1)
 .QuestionModal
   +display(flex)
   +flex-direction(column)

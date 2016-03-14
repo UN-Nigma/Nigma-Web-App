@@ -12,6 +12,11 @@ const UserApi = {
     login: {
       route: "/users/login",
       method: API._REQUEST_METHOD.post
+    },
+
+    register: {
+    	route: "/users",
+    	method: API._REQUEST_METHOD.post
     }
   },
 
@@ -23,6 +28,12 @@ const UserApi = {
   login(email, password) {
     const route = this._routes.login;
     var data = {user: {email: email, pass: password}}
+    return API.callAjaxRequest(route, data);
+  },
+
+  register(name, email, password) {
+  	const route = this._routes.register;
+    var data = {user: {email: email, pass: password, name: name}}
     return API.callAjaxRequest(route, data);
   }
 

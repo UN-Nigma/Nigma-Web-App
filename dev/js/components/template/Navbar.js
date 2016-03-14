@@ -16,7 +16,7 @@ var Navbar = React.createClass({
 		return (
 			<nav className="TopNavbar">
 				<ul className="nav left">
-					<li className="item logo" onClick={this.moveTo.bind(this, "/")}>
+					<li className="item logo" onClick={this.moveTo.bind(this, "/admin")}>
 						<img src="images/logo.png" />
 					</li>
 					<li className="item" onClick={this.moveTo.bind(this, "/admin")}>
@@ -25,7 +25,7 @@ var Navbar = React.createClass({
 				</ul>
 				<ul className="nav right">
 					<li className="item sublist">
-						<span>{user.name}</span>
+						<span data-first-letter={user.name[0]} className="name">{user.name}</span>
 						<ul>
 							<li className="sublist-item" onClick={this.moveTo.bind(this, "/admin/info")}>
 								<span>Mi información</span>

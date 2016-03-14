@@ -27,7 +27,6 @@ var Modal = React.createClass({
 		if(positiveAction && (typeof positiveAction) == "function") {
 			positiveAction();
 		}
-		this.closeModal();
 	},
 
 	onNegativeClick() {
@@ -35,7 +34,6 @@ var Modal = React.createClass({
 		if(negativeAction && (typeof negativeAction) == "function") {
 			negativeAction();
 		}
-		this.closeModal();
 	},
 
 	closeModal() {
@@ -43,6 +41,7 @@ var Modal = React.createClass({
 		this.setState({
 			closed: true
 		});
+		console.log(React.unmountComponentAtNode(React.findDOMNode(this).parentNode));
 	},
 
 	openModal() {
@@ -57,6 +56,7 @@ var Modal = React.createClass({
 				<section className="modal-content">
 					<section className="modal-title">
 						<span className="text">{this.props.title}</span>
+						<i className="material-icons close" onClick={this.closeModal}>close</i>
 					</section>
 					<section className="modal-body">
 						{this.props.children}

@@ -1,9 +1,10 @@
 .QuestionExplorer
-  display: flex
+  +display(flex)
   width: 100%
   flex-direction: column
+  padding-top: 4px
   .file-table
-    display: table
+    +display(table)
     table-layout: fixed
     width: 100%
 
@@ -11,10 +12,10 @@
       background-color: rgb(250,250,250)
       position: relative
       width: 100%
-      display: table-header-group
+      +display(table-header-group)
 
       .header
-        display: table-cell
+        +display(table-cell)
         height: 48px
         box-sizing: border-box
         background-color: #fafafa
@@ -55,14 +56,14 @@
 
 
   .Row
-    display: table-row
+    +display(table-row)
     width: 100%
     height: 48px
     max-height: 48px
     box-sizing: border-box
     background-color: #fff
     .cell
-      display: table-cell
+      +display(table-cell)
       width: 100%
       height: 100%
       line-height: 48px
@@ -91,7 +92,7 @@
           margin-left: 5px
 
       .buttons
-        display: flex
+        +display(flex)
         flex-direction: row
         a
           margin-left: 5px

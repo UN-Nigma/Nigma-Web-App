@@ -17,24 +17,17 @@ var Login = React.createClass({
 	},
 	register(evt) {
 		var self = this;
-		if(!self.state.new) {
-			this.setState({
-				new:  true
-			});
-		}
-		else {
-
-		}
+		if(!self.state.new)
+			this.setState({new:  true});
+		else
+			UserActions.register(self.state.name, self.state.email, self.state.password);
 	},
 	signIn(evt) {
 		var self = this;
-		if(!self.state.new) {
-			UserActions.login(this.state.email, this.state.password) 
-		} else {
-			this.setState({
-				new:  false
-			});
-		}
+		if(!self.state.new)
+			UserActions.login(this.state.email, this.state.password)
+		else
+			this.setState({new:  false});
 	},
 	render() {
 		return (
@@ -44,10 +37,9 @@ var Login = React.createClass({
 				</section>
 				<section className="form">
 					{this.state.new ? <input type="text" placeholder="Nombre" className="form-control" data-path="name" value={this.state.name} onChange={this.onChange} /> : null}
-					<input type="email" placeholder="Usuario" className="form-control" data-path="email" value={this.state.email} onChange={this.onChange} />
+					<input type="email" placeholder="Correo electrónico" className="form-control" data-path="email" value={this.state.email} onChange={this.onChange} />
 					<input type="password" placeholder="Contraseña" className="form-control" data-path="password" value={this.state.password} onChange={this.onChange} />
 					<section className="buttons">
-
 						<button className={`button ${this.state.new ? 'green' : 'dark'}`} onClick={this.register}>Registrarse</button>
 						<button className={`button ${this.state.new ? 'dark' : 'green'}`}  onClick={this.signIn}>Iniciar sesión</button>
 					</section>

@@ -1,11 +1,11 @@
-var React = require('react');
-var Reflux = require('reflux');
-var AnswerEditorActions = require('../../../../actions/QuestionEditorActions/AnswerEditorActions');
-var QuestionEditorStore = require('../../../../stores/QuestionEditorStore');
-var DeepLinkStateMixin = require('../../../../mixins/DeepLinkState');
-var Tooltip = require('../../../util/popover');
-var Modal = require('../../../util/modal');
-
+import React from 'react'
+import Reflux from 'reflux'
+import AnswerEditorActions from '../../../../actions/QuestionEditorActions/AnswerEditorActions'
+import QuestionEditorStore from '../../../../stores/QuestionEditorStore'
+import DeepLinkStateMixin from '../../../../mixins/DeepLinkState'
+import Tooltip from '../../../util/popover'
+import Modal from '../../../util/modal'
+import Ckeditor from '../../../../utils/ckeditor'
 var currentTooltip = null;
 var MultipleSelection = React.createClass({
 	mixins: [Reflux.connect(QuestionEditorStore, 'storeData'), DeepLinkStateMixin],
@@ -186,17 +186,15 @@ var EditNewModal = React.createClass({
 	},
 	render() {
 		return (
-			<div className="ValueEditor">
-				<Modal title="Editor" ref="modal" positiveActionName="Guardar" positiveAction={this.saveChanges} negativeAction={this.cancelModal}>
-					<div className="ck-editor" id="ck-editor-modal"/>
-				</Modal>
-			</div>
+			<Modal title="Editor" ref="modal" positiveActionName="Guardar" positiveAction={this.saveChanges} negativeAction={this.cancelModal}>
+				<div className="ck-editor" id="ck-editor-modal"/>
+			</Modal>
 		);
 	},
 
 	componentDidMount() {
-		var Ckeditor = require('../../../../utils/ckeditor');
-		this.CkeditorController = new  Ckeditor();
+
+		this.CkeditorController = new  Ckeditor(QuestionEditorStore.getCurrentQuestion()._id);
 		this.CkeditorController.createInstance('ck-editor-modal');
 		this.CkeditorController.setValue(this.props.initialOption);
 	},

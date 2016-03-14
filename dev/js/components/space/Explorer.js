@@ -1,17 +1,18 @@
-var React = require('react');
-var Reflux = require('reflux');
-var QuestionExplorer = require('./question-explorer/QuestionExplorer');
-var Navigator = require('./question-explorer/Navigator');
+import React from 'react'
+import Reflux from 'reflux'
+import DeepLinkStateMixin from '../../mixins/DeepLinkState'
 
-var DeepLinkStateMixin = require('../../mixins/DeepLinkState');
+//Components
+import Modal from '../util/modal'
+import QuestionExplorer from './question-explorer/QuestionExplorer'
+import Navigator from './question-explorer/Navigator'
+
 
 
 window.QuestionExplorerStore = require('../../stores/questionExplorerStore');
-var QuestionExplorerActions = require('../../actions/questionExplorerActions');
+import QuestionExplorerActions from '../../actions/questionExplorerActions'
+import NotificationActions from '../util/actions/NotificationActions'
 
-
-//Components
-var Modal = require('../util/modal');
 
 var Explorer = React.createClass({
 	mixins: [Reflux.connect(QuestionExplorerStore, 'storeData')],
@@ -22,7 +23,7 @@ var Explorer = React.createClass({
 	},
 
 
-	componentWillReceiveProps: function(nextProps) {
+	componentWillReceiveProps(nextProps) {
 		if(nextProps.params.folderId != undefined && nextProps.params.folderId != null) {
 			QuestionExplorerActions.changeFolder(nextProps.params.folderId);
 		} else {
@@ -38,7 +39,9 @@ var Explorer = React.createClass({
 	},
 
 	createFolder() {
-		QuestionExplorerActions.createFolder("Nombre quemado", this.state.storeData.currentFolder._id);
+		var content = <CreateFolderModal currentFolderId={this.state.storeData.currentFolder._id} />
+		var modal = React.render(content, document.getElementById('modal_container'));
+		modal.openModal();
 	},
 	render() {
 		return (
@@ -76,32 +79,70 @@ var CreateQuestionModal = React.createClass({
 		this.refs.modal.openModal();
 	},
 	createQuestion() {
-		if(this.state.name != "" && this.state.type != "") {
+		if(this.state.questionName != "" && this.state.type != "") {
 			QuestionExplorerActions.createQuestion(this.state, this.props.currentFolderId);
 			this.refs.modal.closeModal();
+		} else {
+			NotificationActions.showNotification("Por favor completar toda la información para crear la pregunta", "warning");
 		}
 	},
 	render() {
 		return (
-			<div>
-				<Modal title="Crear pregunta" ref="modal" positiveActionName="Crear" positiveAction={this.createQuestion} negativeAction={this.closeAndDelete}>
-					<article className="QuestionModal">
-						<section className="group">
-							<label htmlFor="questionName">Nombre de la pregunta</label>
-							<input type="text" id="questionName" placeholder="Nombre de la pregunta" className="form-control" data-path="questionName" onChange={this.onChange} value={this.state.questionName}/>
-						</section>
-						<section className="group">
-							<label htmlFor="type">Tipo de pregunta</label>
-							<select className="form-control" id="type" value={this.state.type} onChange={this.onChange} data-path="type">
-								<option value="Complete">Completación</option>
-								<option value="MultipleSelection">Selección multiple</option>
-								<option value="Matching">Emparejamiento</option>
-								<option value="Ordering">Ordenamiento</option>
-							</select>
-						</section>
-					</article>
-				</Modal>
-			</div>
+			<Modal title="Crear pregunta" ref="modal" positiveActionName="Crear" positiveAction={this.createQuestion} negativeAction={this.closeAndDelete}>
+				<article className="QuestionModal">
+					<section className="group">
+						<label htmlFor="questionName">Nombre de la pregunta</label>
+						<input type="text" id="questionName" placeholder="Nombre de la pregunta" className="form-control" data-path="questionName" onChange={this.onChange} value={this.state.questionName}/>
+					</section>
+					<section className="group">
+						<label htmlFor="type">Tipo de pregunta</label>
+						<select className="form-control" id="type" value={this.state.type} onChange={this.onChange} data-path="type">
+							<option value="Complete">Completación</option>
+							<option value="MultipleSelection">Selección multiple</option>
+							<option value="Matching">Emparejamiento</option>
+							<option value="Ordering">Ordenamiento</option>
+						</select>
+					</section>
+				</article>
+			</Modal>
+		);
+	}
+
+});
+
+
+var CreateFolderModal = React.createClass({
+	mixins: [DeepLinkStateMixin],
+	getInitialState() {
+		return {
+			folderName: ""
+		};
+	},
+
+	onChange(evt) {
+		this.changeState(evt, this);
+	},
+	openModal() {
+		this.refs.modal.openModal();
+	},
+	createQuestion() {
+		if(this.state.folderName != "") {
+			QuestionExplorerActions.createFolder(this.state.folderName, this.props.currentFolderId);
+			this.refs.modal.closeModal();
+		} else {
+			NotificationActions.showNotification("Por favor completar toda la información para crear la carpeta", "warning");
+		}
+	},
+	render() {
+		return (
+			<Modal title="Crear carpeta" ref="modal" positiveActionName="Crear" positiveAction={this.createQuestion} negativeAction={this.closeAndDelete}>
+				<article className="QuestionModal">
+					<section className="group">
+						<label htmlFor="folderName">Nombre de la carpeta</label>
+						<input type="text" id="folderName" placeholder="Nombre de la carpeta" className="form-control" data-path="folderName" onChange={this.onChange} value={this.state.folderName}/>
+					</section>
+				</article>
+			</Modal>
 		);
 	}
 

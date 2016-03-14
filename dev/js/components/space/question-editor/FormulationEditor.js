@@ -14,8 +14,10 @@ var FormulationEditor = React.createClass({
 
 	componentDidMount() {
 		var CkeditorController = QuestionEditorStore.getCKeditorController();
+		CkeditorController.setQuestionId(this.props.question._id);
 		this.editor = CkeditorController.createInstance('ck-editor');
 		CkeditorController.setValue(this.props.question.formulation);
+		CkeditorController.setEvents();
 		console.log(CkeditorController);
 	},
 	componentDidUpdate(prevProps, prevState) {

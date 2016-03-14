@@ -12,8 +12,7 @@ var NavigatorPath = React.createClass({
 	render() {
 		return (
 			<div className="path">
-				<span className={`name ${this.props.isLast ? "last" : ""}`} onClick={this.changeFolder} >{this.props.folder.name}</span>
-				{this.props.isLast ? null: <span className="separator"> > </span>}
+				<span className={`name`} onClick={this.changeFolder} >{this.props.folder.name}</span>
 			</div>
 		);
 	}
@@ -28,10 +27,9 @@ var Navigator = React.createClass({
 	},
 
 	render() {
-		var routeSize = this.props.route.length;
 		return (
 			<div className="Navigator">
-				{this.props.route.map((folder, index) => <NavigatorPath folder={folder} isLast={((index + 1) == routeSize)} key={index}/>)}
+				{this.props.route.map((folder, index) => <NavigatorPath folder={folder} key={index}/>)}
 			</div>
 		);
 	}

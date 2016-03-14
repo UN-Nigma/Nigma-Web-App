@@ -11,7 +11,7 @@ var UserStore = Reflux.createStore({
 	listenables: [UserActions],
 	user: null,
 	init() {
-		
+		this.user = Auth.getUser();
 	},
 	getInitialState() {
 		this.user = Auth.getUser();
@@ -51,8 +51,29 @@ var UserStore = Reflux.createStore({
 		}
 	},
 
-	register(data) {
-		console.log("Nothing happens yet");
+	register(name, email, password) {
+		var self = this;
+		if((name && email && password)) {
+			LoaderActions.showLoader("Creando usuario");
+			UserApi.register(name, email, password).then(function(res) {
+					Auth.loginComplete(res.token);
+					return res;
+				}).then(UserApi.getData.bind(UserApi)).then(function(res) {
+					Auth.saveUserData(res.user);
+					self.user = res.user;
+					LoaderActions.hideLoader();
+					browserHistory.push("/admin");
+				})
+				.catch(function(error) {
+					console.error(error);
+					LoaderActions.hideLoader();
+					NotificationActions.showNotification("No se pudo crear el usuario.", "alert");
+				});
+		} else {
+			NotificationActions.showNotification("Por favor llené completamente el formulario.", "alert");
+		}
+
+
 	},
 
 	//Helper

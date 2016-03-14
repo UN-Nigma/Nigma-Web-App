@@ -46,6 +46,10 @@ const QuestionAPI = {
 		validateAnswers: {
 			route: "/questions/:questionId/answers/validate",
 			method: API._REQUEST_METHOD.put
+		},
+
+		uploadImage: {
+			route: "/questions/:questionId/scorms/uploadfiles"
 		}
 	},
 	createQuestion(data){
@@ -89,6 +93,10 @@ const QuestionAPI = {
 				cb(!res.body.ok, res.body.question)
 			}
 		});
+	},
+
+	getRoute(data, routeName) {
+		return API.getUrl() + API._parseRoute(this._routes[routeName], data);
 	},
 
 	donwloadQuestionExport(data) {

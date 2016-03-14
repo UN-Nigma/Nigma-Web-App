@@ -29,6 +29,25 @@
       
       min-width: 100px
       padding: 0
+      span.name
+        +display(flex)
+        +flex-direction(row)
+        +justify-content(flex-start)
+        +align-items(center)
+
+        &:before
+          $size: 40px
+          display: inline-block
+          width: $size
+          height: $size
+          background-color: white
+          border-radius: 50%
+          content: attr(data-first-letter)
+          padding: 3px
+          line-height: $size - 3px * 2
+          color: black
+          margin-right: 10px
+          font-size: 1.4rem
       span, a
         margin: 5px
         display: block

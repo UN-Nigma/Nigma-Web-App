@@ -328,6 +328,9 @@ var QuestionEditorStore = Reflux.createStore({
 		}
 	},
 
+	getCurrentQuestion() {
+		return this.currentQuestion;
+	},
 	getCKeditorController() {
 		return this.CkeditorController;
 	},
