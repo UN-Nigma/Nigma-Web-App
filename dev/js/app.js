@@ -4,7 +4,7 @@ import React from "react"
 import Admin from './components/space/Admin'
 import Explorer from './components/space/Explorer'
 import QuestionEditor from './components/space/question-editor/QuestionEditor'
-import Home from "./components/home/home"
+import Home from "./components/home/Home"
 
 //Utilities
 import Loader from './components/util/loader'
@@ -18,6 +18,8 @@ const Nigma = React.createClass({
 		return (
 			<div className="app">
 				{this.props.children}
+				<Loader />
+				<Notification />
 			</div>
 		)
 	}

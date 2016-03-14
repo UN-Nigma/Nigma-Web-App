@@ -11,6 +11,8 @@ var Navbar = React.createClass({
 	},
 
 	render() {
+		let user = UserStore.getUser();
+
 		return (
 			<nav className="TopNavbar">
 				<ul className="nav left">
@@ -23,7 +25,7 @@ var Navbar = React.createClass({
 				</ul>
 				<ul className="nav right">
 					<li className="item sublist">
-						<span>{this.props.user ? this.props.user.name : "Usuario 1"}</span>
+						<span>{user.name}</span>
 						<ul>
 							<li className="sublist-item" onClick={this.moveTo.bind(this, "/admin/info")}>
 								<span>Mi información</span>

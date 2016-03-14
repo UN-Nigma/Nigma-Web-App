@@ -15,14 +15,26 @@ var Login = React.createClass({
 	onChange(evt) {
 		this.changeState(evt, this);
 	},
-	switchToRegister(evt) {
+	register(evt) {
 		var self = this;
-		this.setState({
-			new:  !self.state.new
-		});
+		if(!self.state.new) {
+			this.setState({
+				new:  true
+			});
+		}
+		else {
+
+		}
 	},
 	signIn(evt) {
-		UserActions.login(this.state.email, this.state.password)
+		var self = this;
+		if(!self.state.new) {
+			UserActions.login(this.state.email, this.state.password) 
+		} else {
+			this.setState({
+				new:  false
+			});
+		}
 	},
 	render() {
 		return (
@@ -35,8 +47,9 @@ var Login = React.createClass({
 					<input type="email" placeholder="Usuario" className="form-control" data-path="email" value={this.state.email} onChange={this.onChange} />
 					<input type="password" placeholder="Contraseña" className="form-control" data-path="password" value={this.state.password} onChange={this.onChange} />
 					<section className="buttons">
-						<button className="button dark" onClick={this.switchToRegister}>Registrarse</button>
-						<button className="button green" onClick={this.signIn}>Iniciar sesión</button>
+
+						<button className={`button ${this.state.new ? 'green' : 'dark'}`} onClick={this.register}>Registrarse</button>
+						<button className={`button ${this.state.new ? 'dark' : 'green'}`}  onClick={this.signIn}>Iniciar sesión</button>
 					</section>
 				</section>
 			</article>

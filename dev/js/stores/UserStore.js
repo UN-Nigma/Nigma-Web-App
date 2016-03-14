@@ -11,9 +11,10 @@ var UserStore = Reflux.createStore({
 	listenables: [UserActions],
 	user: null,
 	init() {
+		
 	},
 	getInitialState() {
-
+		this.user = Auth.getUser();
 	},
 
 	login(email, password) {
@@ -24,14 +25,13 @@ var UserStore = Reflux.createStore({
 			LoaderActions.showLoader("Inciando sesión, espere por favor.");
 			UserApi.login(email, password).then(function(res) {
 				Auth.loginComplete(res.token);
+				return res;
+			}).then(UserApi.getData.bind(UserApi)).then(function(res) {
+				Auth.saveUserData(res.user);
+				self.user = res.user;
+				LoaderActions.hideLoader();
 				browserHistory.push("/admin");
 			})
-			// }).then(UserApi.getData).then(function(res) {
-			// 	Auth.saveUserData(res.user);
-			// 	this.user = res.user;
-			// 	LoaderActions.hideLoader();
-			// 	browserHistory.push("/space");
-			// })
 			.catch(function(error) {
 				console.error(error);
 				LoaderActions.hideLoader();
