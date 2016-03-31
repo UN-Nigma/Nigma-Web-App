@@ -1,0 +1,113 @@
+.TopNavbar
+  position: fixed
+  top: 0
+  margin: 0
+  left: 0
+  right: 0
+  background-color: $topbar-color
+  color: white
+  height: 60px
+  +display(flex)
+  +flex-direction(row)
+  z-index: $base-zIndex
+  -webkit-box-shadow: 0px 4px 5px 3px rgba(59,135,97,0.38)
+  -moz-box-shadow: 0px 4px 5px 3px rgba(59,135,97,0.38)
+  box-shadow: 0px 4px 5px 3px rgba(59,135,97,0.38)
+  +padding(0 10px 0 10px);
+  .nav
+    position: relative
+    margin: 0
+    padding: 0
+    +display(flex)
+    +flex-direction(row)
+    +justify-content(flex-start)
+    +align-items(center)
+    .item
+      list-style-type: none
+      position: relative
+      height: $topbar-size
+      
+      min-width: 100px
+      padding: 0
+      span.name
+        +display(flex)
+        +flex-direction(row)
+        +justify-content(flex-start)
+        +align-items(center)
+
+        &:before
+          $size: 40px
+          display: inline-block
+          width: $size
+          height: $size
+          background-color: white
+          border-radius: 50%
+          content: attr(data-first-letter)
+          padding: 3px
+          line-height: $size - 3px * 2
+          color: black
+          margin-right: 10px
+          font-size: 1.4rem
+      span, a
+        margin: 5px
+        display: block
+        line-height: $topbar-size - 10px 
+        text-align: center
+      a
+        text-decoration: none
+        color: white
+        &:hover
+          text-decoration: none
+      &.logo
+        img
+          height: $topbar-size - 10px
+      &:hover, &:active
+        background-color: darken($topbar-color, 5%)
+        cursor: pointer
+      &.sublist
+        &:hover
+          ul
+            +transition(min-height 0.2s linear)
+            min-height: 100px
+        ul
+          +transition(min-height 0.2s linear)
+          position: relative
+          min-height: 0px
+          height: 0px
+          margin: 0
+          padding: 0
+          z-index: $base-zIndex + 1
+          min-width: 100px
+          overflow: hidden
+          .sublist-item
+            position: relative
+            height: $topbar-size / 1.5
+            background-color: white
+            color: $topbar-color
+            list-style-type: none
+            width: 100%
+            min-width: 100px
+            border: 1px solid lighten($topbar-color, 50%)
+            span
+              line-height: ($topbar-size / 1.5)  - 6px
+              margin: 0px
+              +padding(3px 10px 3px 10px)
+              text-align: left
+            &:nth-of-type(n+2)
+              border-top: none
+            &:nth-last-of-type(1)
+              +border-bottom-radius(4px)
+            &:hover
+              background-color: lighten($topbar-color, 10%)
+              color: white
+    &.left
+      +order(1)
+      +align-self(flex-start)
+      +flex(1)
+    &.right
+      +order(2)
+      +align-self(flex-end)
+
+
+
+
