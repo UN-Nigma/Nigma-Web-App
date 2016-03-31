@@ -8,6 +8,7 @@ var FormulationEditor = React.createClass({
 		return (
 			<section className="formulation">
 				<div className="ck-editor" id="ck-editor"/>
+				<p className="disclaimer">Arrastre y suelte sus imagenes adentro del editor para poder usarlas</p>
 			</section>
 		);
 	},

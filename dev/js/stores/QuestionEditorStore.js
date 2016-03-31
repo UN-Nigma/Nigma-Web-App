@@ -49,9 +49,9 @@ var QuestionEditorStore = Reflux.createStore({
 			LoaderActions.hideLoader();
 			var ok = res.ok;
 			if(ok) {
-				alert("Pregunta guardada con exíto")
+				NotificationActions.showNotification("Pregunta guardada con éxito");
 			} else {
-				alert("Ocurrió un error al guardar la pregunta")
+				NotificationActions.showNotification("Error al guardar la pregunta", "alert");
 			}
 		}).catch(function(error) {
 			LoaderActions.hideLoader();
@@ -102,10 +102,6 @@ var QuestionEditorStore = Reflux.createStore({
 			NotificationActions.showNotification("Ocurrió un error no esperado, intente de nuevo más tarde. Si el problema persiste comuniquese con el administrador.", "alert");
 			console.error(error);
 		})
-	},
-
-	exportQuestion() {
-
 	},
 
 	/*

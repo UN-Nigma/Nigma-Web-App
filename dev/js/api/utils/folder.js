@@ -54,13 +54,7 @@ const FolderAPI = {
   },
   updateFolder(data, cb){
     const route = this._routes.update;
-    API.callAjaxRequest(route, data, (err, res) => {
-      if(err){
-        cb(true, null);
-      } else {
-        cb(!res.body.ok, res.body.ok);
-      }
-    });
+    return API.callAjaxRequest(route, data);
   },
   shareFolder(data, cb) {
     const route = this._routes.share;

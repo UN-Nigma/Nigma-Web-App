@@ -99,8 +99,6 @@ var CreateQuestionModal = React.createClass({
 						<select className="form-control" id="type" value={this.state.type} onChange={this.onChange} data-path="type">
 							<option value="Complete">Completación</option>
 							<option value="MultipleSelection">Selección multiple</option>
-							<option value="Matching">Emparejamiento</option>
-							<option value="Ordering">Ordenamiento</option>
 						</select>
 					</section>
 				</article>

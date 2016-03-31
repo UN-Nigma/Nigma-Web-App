@@ -16,6 +16,9 @@ var MultipleSelection = React.createClass({
 	modifyState(path, value) {
 		this.manualChangeState(path, value, this);
 	},
+	onValidate() {
+		AnswerEditorActions.validateAnswer(this.state.storeData.currentQuestion.answer)
+	},
 	render() {
 		var answer = this.state.storeData.currentQuestion.answer;
 		return (
@@ -23,6 +26,16 @@ var MultipleSelection = React.createClass({
 				<MultipleSelection.CorrectValues answer={answer} handleChange={this.handleChange} changeState={this.modifyState}/>
 				<MultipleSelection.CommonErrors answer={answer} handleChange={this.handleChange} changeState={this.modifyState}/>
 				<MultipleSelection.WrongValues answer={answer} handleChange={this.handleChange} changeState={this.modifyState}/>
+				<div className="a-button-container">
+					<section className="actions">
+						<button className="confirm-button" onClick={this.onValidate}>
+							<div className="flex">
+								<i className="material-icons icon">done</i>
+								<span className="text">Validar</span>
+							</div>
+						</button>
+					</section>
+				</div>
 			</article>
 		);
 	}
@@ -31,9 +44,16 @@ var MultipleSelection = React.createClass({
 
 MultipleSelection.CorrectValues = React.createClass({
 	editCorrectValue(index) {
-		var content = <EditNewModal  type={"correctValues"} initialOption={this.props.answer.correctValues[index]} index={index} saveFunction={this.props.changeState} />
+		var value = "";
+		if(index < this.props.answer.correctValues.length)
+			value = this.props.answer.correctValues[index];
+		var content = <EditNewModal  type={"correctValues"} initialOption={value} index={index} saveFunction={this.props.changeState} />
 		var modal = React.render(content, document.getElementById('modal_container'));
 		modal.openModal();
+	},
+	createCorrectValue(evt) {
+		AnswerEditorActions.createCorrectValue();
+		this.editCorrectValue(this.props.answer.correctValues.length);
 	},
 	render() {
 		var path = "storeData.currentQuestion.answer.correctValues";
@@ -42,7 +62,7 @@ MultipleSelection.CorrectValues = React.createClass({
 				<section className="s-title">
 					<i className="s-icon material-icons">assignment_turned_in</i>
 					<span className="s-text">Valores correctos</span>
-					<i className="action-icon material-icons" onClick={AnswerEditorActions.createCorrectValue}>add</i>
+					<i className="action-icon material-icons" onClick={this.createCorrectValue}>add</i>
 				</section>
 				<section className="content">
 						<div className="options">
@@ -55,7 +75,7 @@ MultipleSelection.CorrectValues = React.createClass({
 												</section>
 												<div className="c-actions">
 													<i className="edit" onClick={this.editCorrectValue.bind(this, index)} />
-													<i className="delete" onClick={AnswerEditorActions.deleteCorrectValue.bind(index)}/>
+													<i className="delete" onClick={AnswerEditorActions.deleteCorrectValue.bind(this, index)}/>
 												</div>
 											</div>
 										);
@@ -70,10 +90,16 @@ MultipleSelection.CorrectValues = React.createClass({
 
 MultipleSelection.CommonErrors = React.createClass({
 	editCommonError(index) {
-		console.log(this.props.answer.commonErrors);
-		var content = <EditNewModal  type={"commonErrors"} initialOption={this.props.answer.commonErrors[index].value} index={index} saveFunction={this.props.changeState} />
+		var value = "";
+		if(index < this.props.answer.commonErrors.length)
+			value = this.props.answer.commonErrors[index].value;
+		var content = <EditNewModal  type={"commonErrors"} initialOption={value} index={index} saveFunction={this.props.changeState} />
 		var modal = React.render(content, document.getElementById('modal_container'));
 		modal.openModal();
+	},
+	createCommonError(evt) {
+		AnswerEditorActions.createCommonError();
+		this.editCommonError(this.props.answer.commonErrors.length)
 	},
 	render() {
 		var path = "storeData.currentQuestion.answer.commonErrors";
@@ -82,7 +108,7 @@ MultipleSelection.CommonErrors = React.createClass({
 				<section className="s-title">
 					<i className="s-icon material-icons">assignment_late</i>
 					<span className="s-text">Errores comunes</span>
-					<i className="action-icon material-icons" onClick={AnswerEditorActions.createCommonError}>add</i>
+					<i className="action-icon material-icons" onClick={this.createCommonError}>add</i>
 				</section>
 				<section className="content">
 					<div className="options">
@@ -96,7 +122,7 @@ MultipleSelection.CommonErrors = React.createClass({
 												</section>
 												<div className="c-actions">
 													<i className="edit" onClick={this.editCommonError.bind(this, index)} />
-													<i className="delete" onClick={AnswerEditorActions.deleteCommonError.bind(index)}/>
+													<i className="delete" onClick={AnswerEditorActions.deleteCommonError.bind(this, index)}/>
 												</div>
 											</article>
 										);
@@ -111,9 +137,16 @@ MultipleSelection.CommonErrors = React.createClass({
 
 MultipleSelection.WrongValues = React.createClass({
 	editWrongValue(index) {
-		var content = <EditNewModal  type={"wrongValues"} initialOption={this.props.answer.wrongValues[index]} index={index} saveFunction={this.props.changeState} />
+		var value = "";
+		if(index < this.props.answer.wrongValues.length)
+			value = this.props.answer.wrongValues[index];
+		var content = <EditNewModal  type={"wrongValues"} initialOption={value} index={index} saveFunction={this.props.changeState} />
 		var modal = React.render(content, document.getElementById('modal_container'));
 		modal.openModal();
+	},
+	createWrongValue(evt) {
+		AnswerEditorActions.createWrongValue();
+		this.editWrongValue(this.props.answer.wrongValues.length);
 	},
 	render() {
 		var path = "storeData.currentQuestion.answer.wrongValues";
@@ -122,7 +155,7 @@ MultipleSelection.WrongValues = React.createClass({
 				<section className="s-title">
 					<i className="s-icon material-icons">error</i>
 					<span className="s-text">Valores Incorrectos</span>
-					<i className="action-icon material-icons" onClick={AnswerEditorActions.createWrongValue}>add</i>
+					<i className="action-icon material-icons" onClick={this.createWrongValue}>add</i>
 				</section>
 				<section className="content">
 					<div className="options">
@@ -135,7 +168,7 @@ MultipleSelection.WrongValues = React.createClass({
 												</section>
 												<div className="c-actions">
 													<i className="edit" onClick={this.editWrongValue.bind(this, index)} />
-													<i className="delete" onClick={AnswerEditorActions.deleteWrongValue.bind(index)}/>
+													<i className="delete" onClick={AnswerEditorActions.deleteWrongValue.bind(this, index)}/>
 												</div>
 											</article>
 										);
@@ -168,9 +201,10 @@ var EditNewModal = React.createClass({
 	},
 	openModal() {
 		this.refs.modal.openModal();
+		this.setState(this.getInitialState());
 	},
 	cancelModal() {
-
+		this.refs.modal.closeModal();
 	},
 	saveChanges() {
 		var type = this.props.type;
@@ -181,8 +215,8 @@ var EditNewModal = React.createClass({
 			this.props.saveFunction(`storeData.currentQuestion.answer.commonErrors.${this.props.index}.value`, value);
 		} else if(type == "wrongValues") {
 			this.props.saveFunction(`storeData.currentQuestion.answer.wrongValues.${this.props.index}`, value);
-
 		}
+		this.refs.modal.closeModal();
 	},
 	render() {
 		return (

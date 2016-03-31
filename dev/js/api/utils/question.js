@@ -47,7 +47,10 @@ const QuestionAPI = {
 			route: "/questions/:questionId/answers/validate",
 			method: API._REQUEST_METHOD.put
 		},
-
+		updateQuestion: {
+			route: "/questions/:questionId/",
+			method: API._REQUEST_METHOD.put
+		},
 		uploadImage: {
 			route: "/questions/:questionId/scorms/uploadfiles"
 		}
@@ -70,29 +73,9 @@ const QuestionAPI = {
 		return API.callAjaxRequest(route, data);
 	},
 
-	exportQuestionData(data, cb){
-
-		console.log("Data", data);
-		const route = this._routes.exportQuestionData;
-
-		API.callAjaxRequest(route, data, (err, res) => {
-			if(err){
-				cb(err, null);
-			} else {
-				cb(!res.body.ok);
-			}
-		});
-	},
-
-	shareQuestion(data, cb) {
-		const route = this._routes.share;
-		API.callAjaxRequest(route, data, (err, res) => {
-			if (err) {
-				cb(true, null);
-			} else {
-				cb(!res.body.ok, res.body.question)
-			}
-		});
+	updateQuestion(data) {
+		const route = this._routes.updateQuestion;
+		return API.callAjaxRequest(route, data);
 	},
 
 	getRoute(data, routeName) {

@@ -72,13 +72,51 @@ var QuestionExplorerStore = Reflux.createStore({
 			self.currentFolder.questions.push(question);
 			self.trigger(self.generateState());
 			LoaderActions.hideLoader();
-			NotificationActions.showNotification("Pregunta creada con éxito");
-
+			window.open(`/admin/question/${question._id}`);
 		})
 		.catch(function(error) {
 			console.error(error);
 			NotificationActions.showNotification("Ocurrió un error, intente de nuevo más tarde", "alert");
 			LoaderActions.hideLoader();
+		})
+	},
+
+	updateQuestion(question, index, newQuestionName, newQuestionType) {
+		var data = {questionId: question._id, question: {name: newQuestionName, type: newQuestionType}};
+		var self = this;
+		LoaderActions.showLoader("Actualizando");
+		QuestionAPI.updateQuestion(data).then(function(res) {
+			var ok = res.ok;
+			if(ok) {
+				self.currentFolder.questions[index].name = newQuestionName;
+				self.currentFolder.questions[index].type = newQuestionType;
+			}
+			LoaderActions.hideLoader();
+			NotificationActions.showNotification("Actualización éxitosa");
+			self.trigger(self.generateState());
+		}).catch(function(err) {
+			LoaderActions.hideLoader();
+			console.error(err);
+			NotificationActions.showNotification("Ha ocurrido un error", "alert");
+		})
+	},
+
+	updateFolder(folder, index, newFolderName) {
+		var data = {folderid: folder._id, folder: {name: newFolderName}};
+		var self = this;
+		LoaderActions.showLoader("Actualizando");
+		FolderAPI.updateFolder(data).then(function(res) {
+			var ok = res.ok;
+			if(ok) {
+				self.currentFolder.folders[index].name = newFolderName;
+			}
+			LoaderActions.hideLoader();
+			NotificationActions.showNotification("Actualización éxitosa");
+			self.trigger(self.generateState());
+		}).catch(function(err) {
+			LoaderActions.hideLoader();
+			console.error(err);
+			NotificationActions.showNotification("Ha ocurrido un error", "alert");
 		})
 	},
 
