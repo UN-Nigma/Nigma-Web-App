@@ -1,6 +1,6 @@
 const request = require('superagent');
 const _ = require('lodash');
-const _URL = "http://localhost:4000/api";
+const _URL = require('./API_URL').URL;
 
 const Auth = require('../utils/auth');
 
