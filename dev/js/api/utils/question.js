@@ -85,7 +85,7 @@ const QuestionAPI = {
 	donwloadQuestionExport(data) {
 		var route = this._routes.donwloadQuestionExport;
 		var url = API.getUrl();
-		url = url.replace(/api/,"static");
+		url = url.replace(/api$/,"static");
 		window.open(`${url}/${data.questionid}.zip`);
 	},
 	exportQuestion(data) {
