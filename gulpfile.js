@@ -142,7 +142,7 @@ function bundleScripts(watch){
 })
 
 
- gulp.task('serve', function() {
+ gulp.task('serve', ['dev'], function() {
  	var historyApiFallback = require('connect-history-api-fallback')
 
  	browserSync.init({
